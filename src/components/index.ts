@@ -10,3 +10,9 @@ export { default as TextWithUnderline } from "./text-with-underline";
 export { default as HeroSlider } from "./hero-slider";
 
 export { default as SlideCard } from "./slide-card";
+
+export { default as HeroAndBreadcrumb } from "./hero-and-breadcrumb";
+
+export { default as BakeStep } from "./bake-step";
+
+export { default as SocialShareMenu } from "./social-share-menu";
