@@ -4,14 +4,11 @@ import NextLink from "next/link";
 import {
     Text,
     Box,
-    Container,
     Heading,
     Stack,
     HStack,
     Flex,
     Icon,
-    Link,
-    VStack,
 } from "@chakra-ui/react";
 import { HiClock, HiUser, HiOutlineHeart } from "react-icons/hi";
 import { TRecipe } from "@types";
@@ -43,6 +40,7 @@ const RecipeCard = ({
                         }
                         layout="fill"
                         objectFit="cover"
+                        alt={attributes.title}
                     />
                 </Box>
                 <Flex

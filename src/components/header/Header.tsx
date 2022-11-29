@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Container, Box, Divider } from "@chakra-ui/react";
+import {  Box, Divider } from "@chakra-ui/react";
 import HeaderTop from "./HeaderTop";
 import HeaderBottom from "./HeaderBottom";
 import MobileHeader from "./MobileHeader";

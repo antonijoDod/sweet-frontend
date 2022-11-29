@@ -26,6 +26,7 @@ const RecentCard = ({ id, attributes }: TRecipe): ReactElement => {
                         }
                         layout="fill"
                         objectFit="cover"
+                        alt={attributes.title}
                     />
                     <Box
                         rounded="full"

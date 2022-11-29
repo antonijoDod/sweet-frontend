@@ -19,7 +19,6 @@ import {
     HiOutlineMenuAlt3,
     HiSearch,
     HiUser,
-    HiChevronDown,
 } from "react-icons/hi";
 
 import { NAV_ITEMS, TNavbarItem } from "./NavItems";
