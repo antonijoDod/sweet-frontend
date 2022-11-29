@@ -1,0 +1,43 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+.paginate-style {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0 5rem;
+}
+
+.paginate-style li a {
+  border-radius: 7px;
+  padding: 0.1rem 1rem;
+  border: gray 1px solid;
+  cursor: pointer;
+}
+.paginate-style li.previous a,
+.paginate-style li.next a,
+.paginate-style li.break a {
+  border-color: transparent;
+}
+.paginate-style li.active a {
+  background-color: #0366d6;
+  border-color: transparent;
+  color: white;
+  min-width: 32px;
+}
+.paginate-style li.disabled a {
+  color: grey;
+}
+.paginate-style li.disable,
+.paginate-style li.disabled a {
+  cursor: default;
+}
