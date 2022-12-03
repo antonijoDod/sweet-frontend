@@ -15,6 +15,7 @@ const Footer = (): ReactElement => {
                     href="https://github.com/pankod"
                     target="_blank"
                     data-testid="pankod-logo"
+                    rel="noreferrer"
                 >
                    Logo
                 </a>
@@ -22,6 +23,7 @@ const Footer = (): ReactElement => {
                     <a
                         href="https://www.facebook.com/groups/743893966260475"
                         target="_blank"
+                        rel="noreferrer"
                     >
                         Facebook
                     </a>

@@ -1,15 +1,19 @@
 import "@styles/global.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
-import "@fontsource/lora/700.css";
-import "@fontsource/hind/600.css";
-import "@fontsource/hind/500.css";
-import "@fontsource/hind/400.css";
+import { SessionProvider } from "next-auth/react";
+import theme from "@definitions/chakra/theme";
+
+import "@fontsource/poppins/700.css";
+import "@fontsource/source-sans-pro/600.css";
+import "@fontsource/source-sans-pro/400.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <SessionProvider session={pageProps.session}>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </SessionProvider>
   );
 }

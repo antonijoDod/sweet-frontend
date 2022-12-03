@@ -16,8 +16,8 @@ import axios from "axios";
 import { TRecipes } from "@types";
 
 type THomeProps = {
-    recipes: TRecipes;
-    popularRecipes: TRecipes;
+    recipes: TRecipes
+    popularRecipes: TRecipes
 };
 
 const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {

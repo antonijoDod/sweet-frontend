@@ -1,4 +1,4 @@
 export default {
-    heading: `'Lora', serif`,
-    body: `'Hind', sans-serif`,
+    heading: `'Poppins', sans-serif`,
+    body: `'Source Sans Pro', sans-serif`,
 };
