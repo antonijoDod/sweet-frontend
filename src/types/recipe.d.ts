@@ -25,7 +25,7 @@ export type TRecipeAttributes = {
         data: TUser;
     };
     categories: {
-        data: TCategory[] | null;
+        data: TCategory[];
     };
 };
 

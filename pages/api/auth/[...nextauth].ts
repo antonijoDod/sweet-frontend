@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 
 export const authOptions: NextAuthOptions = {
-    secret:"IpkxNmtrZ3yK6eWq4E/SdFLbZihzgi5tQ3ghH6l9xEI=",
+    secret: "IpkxNmtrZ3yK6eWq4E/SdFLbZihzgi5tQ3ghH6l9xEI=",
     session: {
         strategy: "jwt",
     },
@@ -48,6 +48,21 @@ export const authOptions: NextAuthOptions = {
                 }
             },
         }),
-    ]
+    ],
+    callbacks: {
+        session: async ({ session, token }) => {
+            session.id = token.id;
+            session.jwt = token.jwt;
+            return Promise.resolve(session);
+        },
+        jwt: async ({ token, user }) => {
+            const isSignIn = user ? true : false;
+            if (isSignIn) {
+                token.id = user.id;
+                token.jwt = user.jwt;
+            }
+            return Promise.resolve(token);
+        },
+    },
 };
 export default NextAuth(authOptions);

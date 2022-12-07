@@ -61,7 +61,9 @@ const HeroAndBreadcrumb = ({ title, breadcrumbItems }: Props): ReactElement => {
                                 key={label}
                                 isCurrentPage={href === pathname ? true : false}
                             >
-                                    <BreadcrumbLink as={Link} href={href ?? "#"}>{label}</BreadcrumbLink>
+                                <BreadcrumbLink as={Link} href={href ?? "#"}>
+                                    {label}
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
                         ))}
                     </Breadcrumb>

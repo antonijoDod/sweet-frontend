@@ -11,13 +11,19 @@ import {
 } from "@chakra-ui/react";
 import { FaFacebookF } from "react-icons/fa";
 
-import { Layout, RecentCard, RecipeCard, HeroSlider, TextWithUnderline } from "@components";
+import {
+    Layout,
+    RecentCard,
+    RecipeCard,
+    HeroSlider,
+    TextWithUnderline,
+} from "@components";
 import axios from "axios";
 import { TRecipes } from "@types";
 
 type THomeProps = {
-    recipes: TRecipes
-    popularRecipes: TRecipes
+    recipes: TRecipes;
+    popularRecipes: TRecipes;
 };
 
 const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {
@@ -25,17 +31,6 @@ const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {
         <Layout>
             <Container as="section" maxW="container.xl">
                 <HeroSlider recipes={popularRecipes?.data.slice(0, 3)} />
-            </Container>
-            {/* Bellow hero */}
-            <Container as="section" maxW="container.xl">
-                <SimpleGrid columns={{ base: 1, md: 3 }} spacing="8" mt={8}>
-                    {popularRecipes?.data
-                        .slice(1)
-                        .slice(-3)
-                        .map((recipe) => (
-                            <RecipeCard key={recipe.id} {...recipe} />
-                        ))}
-                </SimpleGrid>
             </Container>
             <Container as="section" maxW="container.xl" mt={16}>
                 <Grid
@@ -122,12 +117,12 @@ const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {
 
 export async function getServerSideProps() {
     const recipesResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?sort[publishedAt]=Desc`,
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?sort[publishedAt]=Desc`
     );
     const recipes = recipesResponse.data;
 
     const popularRecipesResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?filters[isPopular][$eq]=true&sort[publishedAt]=Desc`,
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?filters[isPopular][$eq]=true&sort[publishedAt]=Desc`
     );
     const popularRecipes = popularRecipesResponse.data;
 

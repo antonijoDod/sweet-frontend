@@ -10,22 +10,18 @@ import {
     Flex,
     Icon,
 } from "@chakra-ui/react";
-import { HiClock, HiUser, HiOutlineHeart } from "react-icons/hi";
+import { HiStar, HiOutlineStar } from "react-icons/hi";
 import { TRecipe } from "@types";
 
 interface Props extends TRecipe {
     imageHeight?: number;
 }
 
-const RecipeCard = ({
-    id,
-    attributes,
-    imageHeight = 250,
-}: Props): ReactElement => {
+const RecipeCard = ({ attributes, imageHeight = 250 }: Props): ReactElement => {
     return (
         <NextLink href={`/recept/${attributes.slug}`} shallow={true}>
-            <Box cursor="pointer" _hover={{ boxShadow: "lg" }} h="fulls">
-                <Box h={imageHeight} position="relative">
+            <Box cursor="pointer" h="fulls">
+                <Box h={imageHeight} position="relative" mb={4}>
                     <Image
                         src={
                             attributes.main_image.data
@@ -36,7 +32,7 @@ const RecipeCard = ({
                                           .formats.small.url
                                     : process.env.NEXT_PUBLIC_SERVER_API +
                                       attributes.main_image.data?.attributes.url
-                                : ""
+                                : "/images/no-image.jpg"
                         }
                         layout="fill"
                         objectFit="cover"
@@ -47,47 +43,43 @@ const RecipeCard = ({
                     direction="column"
                     justifyContent="space-between"
                     bgColor="white"
-                    textAlign="center"
-                    p="6"
+                    mb={4}
                 >
                     <Box>
-                        <Text
-                            fontSize="sm"
-                            fontWeight="600"
-                            color="red.500"
-                            mb={4}
-                            textTransform="uppercase"
-                        >
-                            {attributes.categories.data?.map(
-                                (category) => category.attributes.name,
-                            )}
-                        </Text>
-                        <Heading as="h3" size="md" mb={4}>
+                        {attributes.categories.data.length > 0 ? (
+                            attributes.categories.data?.map((category) => (
+                                <Text
+                                    key={category.id}
+                                    fontWeight="600"
+                                    color="gray.600"
+                                    mb={4}
+                                    textTransform="uppercase"
+                                >
+                                    {category.attributes.name}
+                                </Text>
+                            ))
+                        ) : (
+                            <Text
+                                fontWeight="600"
+                                color="gray.600"
+                                mb={4}
+                                textTransform="uppercase"
+                            >
+                                Bez kategorije
+                            </Text>
+                        )}
+                        <Heading as="h3" size="md">
                             {attributes.title}
                         </Heading>
-                        <Text mb="4" noOfLines={2}>
-                            {attributes.description}
-                        </Text>
                     </Box>
-                    <Stack justifyContent="center" direction="row" spacing="4">
-                        <HStack spacing={2} align="center">
-                            <Icon as={HiClock} color="red.500" fontSize="xl" />
-                            <Text>15 min</Text>
-                        </HStack>
-                        <HStack spacing={2} align="center">
-                            <Icon as={HiUser} color="red.500" fontSize="xl" />
-                            <Text>Martina</Text>
-                        </HStack>
-                        <HStack spacing={2} align="center">
-                            <Icon
-                                as={HiOutlineHeart}
-                                color="red.500"
-                                fontSize="xl"
-                            />
-                            <Text>5 likes</Text>
-                        </HStack>
-                    </Stack>
                 </Flex>
+                <HStack color="red.500">
+                    <Icon as={HiStar} fontSize="xl" />
+                    <Icon as={HiStar} fontSize="xl" />
+                    <Icon as={HiStar} fontSize="xl" />
+                    <Icon as={HiStar} fontSize="xl" />
+                    <Icon as={HiOutlineStar} fontSize="xl" />
+                </HStack>
             </Box>
         </NextLink>
     );
