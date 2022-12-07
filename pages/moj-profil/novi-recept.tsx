@@ -15,7 +15,7 @@ import {
     IconButton,
 } from "@chakra-ui/react";
 import { HiOutlineTrash } from "react-icons/hi";
-import { useCreateRecipe } from "@hooks";
+import { useCreateRecipe, useGetPrivateUploads } from "@hooks";
 
 const IMAGES = [
     { id: "1", url: "/images/product1.jpg" },
@@ -31,6 +31,11 @@ type FormValues = {
 
 const NewRecipe = (): ReactElement => {
     const { createRecipe, isLoading, isError } = useCreateRecipe();
+    const {
+        privateUploads,
+        isLoading: isLoadingPrivateUploads,
+        isError: isErrorPrivateUploads,
+    } = useGetPrivateUploads();
 
     const [imageData, setImageData] = useState<{
         id: string;

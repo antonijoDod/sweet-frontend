@@ -6,3 +6,5 @@ export * from "./recipes";
 export * from "./step";
 export * from "./categories";
 export * from "./user";
+export * from "./private-uploads"
+export * from "./private-upload"
