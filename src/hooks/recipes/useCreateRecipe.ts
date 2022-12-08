@@ -17,7 +17,7 @@ export const useCreateRecipe = () => {
     }, [status])
 
     const postRecipe = async (postData: TRecipeAttributes) => {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes`, { data: { ...postData, main_image: 15 } }, { headers: { "Authorization": `Bearer ${jwt}` } })
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes`, { data: { ...postData } }, { headers: { "Authorization": `Bearer ${jwt}` } })
         return response.data
     }
 

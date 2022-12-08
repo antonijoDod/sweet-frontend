@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { TextWithUnderline } from "@components";
+import { AddImage, TextWithUnderline } from "@components";
 import { ProfileLayout, MainRecipeImage, ImagesDrawer } from "@components";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import {
@@ -15,34 +15,23 @@ import {
     IconButton,
 } from "@chakra-ui/react";
 import { HiOutlineTrash } from "react-icons/hi";
-import { useCreateRecipe, useGetPrivateUploads } from "@hooks";
-
-const IMAGES = [
-    { id: "1", url: "/images/product1.jpg" },
-    { id: "2", url: "/images/product2.jpg" },
-    { id: "3", url: "/images/product3.jpg" },
-];
+import { useCreateRecipe } from "@hooks";
 
 type FormValues = {
     title: string;
+    main_image: number;
     description: string;
     ingredients: { name: string; amount: string }[];
+    steps: { description: string; step_image: number | null }[];
 };
 
 const NewRecipe = (): ReactElement => {
     const { createRecipe, isLoading, isError } = useCreateRecipe();
-    const {
-        privateUploads,
-        isLoading: isLoadingPrivateUploads,
-        isError: isErrorPrivateUploads,
-    } = useGetPrivateUploads();
 
     const [imageData, setImageData] = useState<{
-        id: string;
+        id: number;
         url: string;
     } | null>(null);
-
-    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
     const {
         handleSubmit,
@@ -50,7 +39,10 @@ const NewRecipe = (): ReactElement => {
         register,
         formState: { errors, isSubmitting },
     } = useForm<FormValues>({
-        defaultValues: { ingredients: [{ name: "", amount: "" }] },
+        defaultValues: {
+            ingredients: [{ name: "", amount: "" }],
+            steps: [{ description: "", step_image: null }],
+        },
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -58,13 +50,21 @@ const NewRecipe = (): ReactElement => {
         name: `ingredients`,
     });
 
-    const onSubmit = async (values: any) => {
-        await createRecipe(values);
-    };
+    const {
+        fields: fieldsSteps,
+        append: appendSteps,
+        remove: removeSteps,
+    } = useFieldArray({
+        control,
+        name: `steps`,
+    });
 
-    const handleImageChange = (value: string): void => {
-        const [selectedImage] = IMAGES.filter((image) => image.id === value);
-        setImageData(selectedImage);
+    const onSubmit = async (values: any) => {
+        console.log(
+            "🚀 ~ file: novi-recept.tsx:50 ~ onSubmit ~ values",
+            values
+        );
+        await createRecipe({ ...values });
     };
 
     return (
@@ -102,10 +102,20 @@ const NewRecipe = (): ReactElement => {
                     </FormErrorMessage>
                 </FormControl>
 
-                <MainRecipeImage
-                    imageUrl={imageData && imageData.url}
-                    onClickOpenDrawer={() => setIsDrawerOpen(true)}
-                />
+                <FormControl isInvalid={errors.title ? true : false}>
+                    <Controller
+                        name="main_image"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { ref, ...rest } }) => (
+                            <AddImage {...rest} />
+                        )}
+                    />
+
+                    <FormErrorMessage>
+                        {errors.title && errors.title.message}
+                    </FormErrorMessage>
+                </FormControl>
 
                 <Box mt="8">
                     <TextWithUnderline title="Sastojci" />
@@ -161,6 +171,50 @@ const NewRecipe = (): ReactElement => {
                         Novi sastojak
                     </Button>
                 </Box>
+
+                {/* Koraci */}
+
+                <Box mt="8">
+                    <TextWithUnderline title="Koraci" />
+                    {fieldsSteps.map((field, index) => (
+                        <Box key={field.id} mt="4">
+                            <Input
+                                w="full"
+                                placeholder="Opis koraka"
+                                {...register(
+                                    `steps.${index}.description` as const,
+                                    {
+                                        required: "This is required",
+                                    }
+                                )}
+                            />
+                            <Controller
+                                name={`steps.${index}.step_image`}
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { ref, ...rest } }) => (
+                                    <AddImage {...rest} />
+                                )}
+                            />
+                            <IconButton
+                                icon={<HiOutlineTrash />}
+                                aria-label="Remove step"
+                                onClick={() => removeSteps(index)}
+                            />
+                        </Box>
+                    ))}
+                    <Button
+                        mt="8"
+                        variant="outline"
+                        size="sm"
+                        colorScheme="green"
+                        onClick={() => {
+                            appendSteps({ description: "", step_image: null });
+                        }}
+                    >
+                        Novi sastojak
+                    </Button>
+                </Box>
                 <Button
                     mt={4}
                     colorScheme="teal"
@@ -170,13 +224,6 @@ const NewRecipe = (): ReactElement => {
                     Podijeli
                 </Button>
             </form>
-            <ImagesDrawer
-                isOpen={isDrawerOpen}
-                handleOnClose={() => setIsDrawerOpen(false)}
-                images={IMAGES}
-                onImageChange={(value) => handleImageChange(value)}
-                initialImage={imageData?.id ? imageData.id : "undefined"}
-            />
         </ProfileLayout>
     );
 };

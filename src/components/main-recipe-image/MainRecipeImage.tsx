@@ -42,7 +42,7 @@ const MainRecipeImage = ({
         <>
             <Box mt={8} h="72" w="96" position="relative">
                 <Image
-                    src={imageUrl}
+                    src={`${process.env.NEXT_PUBLIC_SERVER_API + imageUrl}`}
                     layout="fill"
                     objectFit="cover"
                     alt="Empty"

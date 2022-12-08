@@ -20,26 +20,44 @@ import {
     Input,
 } from "@chakra-ui/react";
 import { HiOutlineCamera } from "react-icons/hi";
-import { ImageRadioItem, ImagePreviewDrawer } from "@components";
+import {
+    ImageRadioItem,
+    ImagePreviewDrawer,
+    LoadingSpinner,
+    ImageItem,
+} from "@components";
+import { useGetPrivateUploads } from "@hooks";
 
 const ImagesDrawer = ({
     isOpen,
     initialImage,
-    images,
     handleOnClose,
     onImageChange,
 }: {
     isOpen: boolean;
     initialImage: string | undefined;
-    images: { id: string; url: string }[];
     handleOnClose: () => void;
-    onImageChange: (value: string) => void;
+    onImageChange: (event: { id: number; url: string }) => void;
 }): ReactElement => {
+    const {
+        privateUploads,
+        isLoading: isLoadingPrivateUploads,
+        isError: isErrorPrivateUploads,
+    } = useGetPrivateUploads();
+
+    const [activeImage, setActiveImage] = useState<number | null>(null);
     const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
     const [fileImage, setFileImage] = useState<File | null>(null);
 
-    const handleImageOption = (value: string) => {
-        onImageChange(value);
+    const handleSelectImageItem = ({
+        id,
+        url,
+    }: {
+        id: number;
+        url: string;
+    }) => {
+        setActiveImage(id);
+        onImageChange({ id, url });
     };
 
     const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,10 +68,8 @@ const ImagesDrawer = ({
         }
     };
 
-    const { getRadioProps } = useRadioGroup({
-        defaultValue: initialImage,
-        onChange: handleImageOption,
-    });
+    if (isErrorPrivateUploads) return <>Error occurred</>;
+    if (!privateUploads) return <>Something is went wrong</>;
 
     return (
         <>
@@ -63,53 +79,65 @@ const ImagesDrawer = ({
                     <DrawerCloseButton />
                     <DrawerHeader>Dodaj sliku</DrawerHeader>
                     <DrawerBody>
-                        <SimpleGrid columns={{ base: 2, sm: 4 }} gap="8">
-                            <Box
-                                mt={8}
-                                h="24"
-                                w="24"
-                                bgColor="red.500"
-                                color="white"
-                                _hover={{ bgColor: "red.400" }}
-                            >
-                                <label
-                                    style={{
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        height: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
+                        {isLoadingPrivateUploads ? (
+                            <LoadingSpinner />
+                        ) : (
+                            <SimpleGrid columns={{ base: 2, sm: 4 }} gap="8">
+                                <Box
+                                    mt={8}
+                                    h="24"
+                                    w="24"
+                                    bgColor="red.500"
+                                    color="white"
+                                    _hover={{ bgColor: "red.400" }}
                                 >
-                                    <Box textAlign="center">
-                                        <Icon
-                                            as={HiOutlineCamera}
-                                            fontSize="5xl"
-                                        />
-                                        <Text>Dodaj novu</Text>
-                                    </Box>
-                                    <input
-                                        type="file"
+                                    <label
                                         style={{
-                                            height: "100%",
+                                            cursor: "pointer",
                                             width: "100%",
-                                            display: "none",
+                                            height: "100%",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
                                         }}
-                                        onChange={(e) => handleUploadImage(e)}
+                                    >
+                                        <Box textAlign="center">
+                                            <Icon
+                                                as={HiOutlineCamera}
+                                                fontSize="5xl"
+                                            />
+                                            <Text>Dodaj novu</Text>
+                                        </Box>
+                                        <input
+                                            type="file"
+                                            style={{
+                                                height: "100%",
+                                                width: "100%",
+                                                display: "none",
+                                            }}
+                                            onChange={(e) =>
+                                                handleUploadImage(e)
+                                            }
+                                        />
+                                    </label>
+                                </Box>
+                                {privateUploads.data.map((image) => (
+                                    <ImageItem
+                                        key={image.id}
+                                        id={image.attributes.media.data.id}
+                                        url={
+                                            image.attributes.media.data
+                                                .attributes.formats.thumbnail
+                                                .url
+                                        }
+                                        onSelect={(event) =>
+                                            handleSelectImageItem(event)
+                                        }
+                                        isChecked={activeImage === image.id}
                                     />
-                                </label>
-                            </Box>
-                            {images.map((image) => (
-                                <ImageRadioItem
-                                    key={image.id}
-                                    url={image.url}
-                                    {...getRadioProps({
-                                        value: image.id,
-                                    })}
-                                />
-                            ))}
-                        </SimpleGrid>
+                                ))}
+                            </SimpleGrid>
+                        )}
                     </DrawerBody>
                     <DrawerFooter>
                         <Button colorScheme="green">Odaberi sliku</Button>

@@ -23,6 +23,7 @@
     "date-fns": "^2.29.3",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
+    "form-data": "^4.0.0",
     "framer-motion": "^7.6.15",
     "i": "^0.3.7",
     "next": "13.0.5",

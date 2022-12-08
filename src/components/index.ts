@@ -23,7 +23,10 @@ export { default as SocialShareMenu } from "./social-share-menu";
 export { default as FilterList } from "./filter-list";
 export { default as FilterCategories } from "./filter-categories";
 
+export { default as AddImage } from './add-image'
+
 export { default as ImagePreviewDrawer } from './image-preview-drawer'
 export { default as ImageRadioItem } from './image-radio-item'
 export { default as ImagesDrawer } from './images-drawer'
 export { default as MainRecipeImage } from './main-recipe-image'
+export { default as ImageItem } from './image-item'

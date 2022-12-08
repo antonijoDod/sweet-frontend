@@ -23,7 +23,7 @@ export const useGetPrivateUploads = () => {
         ["privateUploads"],
         async () => {
             const res = await axios.get(
-                `${process.env.NEXT_PUBLIC_SERVER_API}/api/private-uploads?sort[publishedAt]=Desc`, { headers: { "Authorization": `Bearer ${jwt}` } }
+                `${process.env.NEXT_PUBLIC_SERVER_API}/api/private-uploads`, { headers: { "Authorization": `Bearer ${jwt}` } }
             );
             return await res.data;
         },

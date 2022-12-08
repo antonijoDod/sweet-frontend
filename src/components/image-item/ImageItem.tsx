@@ -1,18 +1,23 @@
 import React, { ReactElement } from "react";
 import Image from "next/image";
-import { useRadio, chakra, Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Icon } from "@chakra-ui/react";
 import { HiCheckCircle } from "react-icons/hi";
 
-type TProps = {
+type TImageItemProps = {
+    id: number;
     url: string;
+    isChecked: boolean;
+    onSelect: (e: { id: number; url: string }) => void;
 };
 
-const ImageRadioItem = ({ url, ...radioProps }: TProps): ReactElement => {
-    const { state, getInputProps, getCheckboxProps, htmlProps, getLabelProps } =
-        useRadio(radioProps);
+const ImageItem = ({
+    id,
+    isChecked = true,
+    url = "",
+    onSelect,
+}: TImageItemProps): ReactElement => {
     return (
-        <chakra.label
-            {...htmlProps}
+        <Box
             mt={8}
             h="24"
             w="24"
@@ -22,16 +27,15 @@ const ImageRadioItem = ({ url, ...radioProps }: TProps): ReactElement => {
             color="white"
             position="relative"
             cursor="pointer"
+            onClick={() => onSelect({ id: id, url: url })}
         >
-            <input {...getInputProps({})} hidden />
             <Box
-                {...getCheckboxProps()}
-                bg={state.isChecked ? "green.200" : "transparent"}
+                bg={isChecked ? "green.200" : "transparent"}
                 w={12}
                 p={1}
                 rounded="full"
             >
-                <Box h="full" w="full" {...getLabelProps()}>
+                <Box h="full" w="full">
                     <Image
                         src={`${process.env.NEXT_PUBLIC_SERVER_API + url}`}
                         layout="fill"
@@ -46,7 +50,7 @@ const ImageRadioItem = ({ url, ...radioProps }: TProps): ReactElement => {
                         h="full"
                         w="full"
                     >
-                        {state.isChecked && (
+                        {isChecked && (
                             <Icon
                                 as={HiCheckCircle}
                                 fontSize="5xl"
@@ -56,8 +60,8 @@ const ImageRadioItem = ({ url, ...radioProps }: TProps): ReactElement => {
                     </Flex>
                 </Box>
             </Box>
-        </chakra.label>
+        </Box>
     );
 };
 
-export default ImageRadioItem;
+export default ImageItem;
