@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios';
-import { TRecipeAttributes } from '@types'
+import { toast } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 export const useCreatePrivateUpload = () => {
     const queryClient = useQueryClient();
@@ -24,7 +25,29 @@ export const useCreatePrivateUpload = () => {
 
 
     const { mutate: uploadImage, isLoading, isError } = useMutation(postPrivateUpload, {
-        onSuccess: () => queryClient.invalidateQueries(["privateImages"]),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["privateImages"]),
+                toast.success('Slika je uspješno spremljena!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined
+                })
+        },
+        onError: () => {
+            toast.error('Dogodila se pogreška!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined
+            })
+        }
     })
 
     return { uploadImage, isLoading, isError }

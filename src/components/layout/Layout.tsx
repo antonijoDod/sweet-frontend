@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from "react";
 import { Header, Footer } from "@components";
 import { Box } from "@chakra-ui/react";
+import { ToastContainer } from "react-toastify";
 
 const Layout = ({ children }: { children: ReactNode }): ReactElement => {
     return (
@@ -10,6 +11,7 @@ const Layout = ({ children }: { children: ReactNode }): ReactElement => {
                 {children}
             </Box>
             <Footer />
+            <ToastContainer />
         </>
     );
 };

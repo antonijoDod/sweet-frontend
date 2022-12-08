@@ -27,6 +27,11 @@ type THomeProps = {
 };
 
 const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {
+    console.log(
+        "🚀 ~ file: index.tsx:30 ~ Home ~ popularRecipes",
+        popularRecipes
+    );
+    console.log("🚀 ~ file: index.tsx:30 ~ Home ~ recipes", recipes);
     return (
         <Layout>
             <Container as="section" maxW="container.xl">

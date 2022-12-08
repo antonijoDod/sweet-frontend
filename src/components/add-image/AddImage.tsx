@@ -1,18 +1,22 @@
-import React, { useState } from "react";
-import { HiOutlineCamera } from "react-icons/hi";
-import { Box, Icon, Text, Flex, Button } from "@chakra-ui/react";
+import React, { useState, ChangeEvent, ReactElement } from "react";
 import { useCreatePrivateUpload } from "@hooks/private-uploads";
 import FormData from "form-data";
-import Image from "next/image";
 import { TPrivateUpload } from "@types";
+import EmptyImage from "./EmptyImage";
+import ImageExist from "./ImageExist";
+import { Alert, AlertTitle } from "@chakra-ui/react";
 
-const AddImage = ({ onChange }) => {
+type TAddImageProps = {
+    onChange: (event: number) => void;
+};
+
+const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
     const { uploadImage, isLoading, isError } = useCreatePrivateUpload();
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-    const handleUploadImage = async (e) => {
-        e.preventDefault();
-        const files = e.target.files;
+    const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const files = event.target.files;
         if (files) {
             const data = { file: "media", name: "my-image" };
             let formData = new FormData();
@@ -33,60 +37,20 @@ const AddImage = ({ onChange }) => {
         }
     };
 
-    if (!imageUrl) {
+    if (isError)
         return (
-            <Box
-                mt={8}
-                h="24"
-                w="24"
-                bgColor="red.500"
-                color="white"
-                _hover={{ bgColor: "red.400" }}
-            >
-                <label
-                    style={{
-                        cursor: "pointer",
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <Box textAlign="center">
-                        <Icon as={HiOutlineCamera} fontSize="5xl" />
-                        <Text>Dodaj novu</Text>
-                    </Box>
-                    <input
-                        type="file"
-                        style={{
-                            height: "100%",
-                            width: "100%",
-                            display: "none",
-                        }}
-                        onChange={(e) => handleUploadImage(e)}
-                    />
-                </label>
-            </Box>
+            <Alert status="error">
+                <AlertTitle>Something went wrong</AlertTitle>
+            </Alert>
         );
-    }
 
-    return (
-        <Box mt={8} h="36" w="48" position="relative">
-            <Image
-                src={`${process.env.NEXT_PUBLIC_SERVER_API + imageUrl}`}
-                layout="fill"
-                objectFit="cover"
-                alt="Empty"
-            />
-            <Box position="absolute" zIndex={999} bottom="0" left="0" right="0">
-                <Flex w="full" justifyContent="space-between" p="4">
-                    <Button size="sm" colorScheme="red">
-                        Ukloni
-                    </Button>
-                </Flex>
-            </Box>
-        </Box>
+    return !imageUrl ? (
+        <EmptyImage
+            onImageChange={(event) => handleUploadImage(event)}
+            isLoading={isLoading}
+        />
+    ) : (
+        <ImageExist imageUrl={imageUrl} />
     );
 };
 
