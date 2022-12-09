@@ -1,5 +1,8 @@
 import React, { useState, ChangeEvent, ReactElement } from "react";
-import { useCreatePrivateUpload } from "@hooks/private-uploads";
+import {
+    useCreatePrivateUpload,
+    useDeletePrivateUpload,
+} from "@hooks/private-uploads";
 import FormData from "form-data";
 import { TPrivateUpload } from "@types";
 import EmptyImage from "./EmptyImage";
@@ -7,12 +10,16 @@ import ImageExist from "./ImageExist";
 import { Alert, AlertTitle } from "@chakra-ui/react";
 
 type TAddImageProps = {
-    onChange: (event: number) => void;
+    onChange: (event: number | null) => void;
 };
 
 const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
     const { uploadImage, isLoading, isError } = useCreatePrivateUpload();
+    const { mutateDeleteImage, isDeleteImageLoading, isDeleteImageError } =
+        useDeletePrivateUpload();
+
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [imageId, setImageId] = useState<number | null>(null);
 
     const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -31,10 +38,21 @@ const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
                         data.data.attributes.media.data.attributes.formats
                             .thumbnail.url
                     );
+                    setImageId(data.data.attributes.media.data.id);
                     onChange(data.data.attributes.media.data.id);
                 },
             });
         }
+    };
+
+    const handleDeleteImage = async (imageId: number) => {
+        await mutateDeleteImage(imageId, {
+            onSuccess: () => {
+                setImageUrl(null);
+                setImageId(null);
+                onChange(null);
+            },
+        });
     };
 
     if (isError)
@@ -50,7 +68,11 @@ const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
             isLoading={isLoading}
         />
     ) : (
-        <ImageExist imageUrl={imageUrl} />
+        <ImageExist
+            id={imageId!}
+            imageUrl={imageUrl}
+            onClickDeleteImage={(imageId) => handleDeleteImage(imageId)}
+        />
     );
 };
 

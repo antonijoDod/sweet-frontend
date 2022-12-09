@@ -3,10 +3,16 @@ import { Box, Flex, Button } from "@chakra-ui/react";
 import Image from "next/image";
 
 type TImageExistProps = {
+    id: number;
     imageUrl: string;
+    onClickDeleteImage: (imageId: number) => void;
 };
 
-const ImageExist = ({ imageUrl }: TImageExistProps): ReactElement => {
+const ImageExist = ({
+    id,
+    imageUrl,
+    onClickDeleteImage,
+}: TImageExistProps): ReactElement => {
     return (
         <Box mt={8} h="36" w="48" position="relative">
             <Image
@@ -17,7 +23,11 @@ const ImageExist = ({ imageUrl }: TImageExistProps): ReactElement => {
             />
             <Box position="absolute" zIndex={999} bottom="0" left="0" right="0">
                 <Flex w="full" justifyContent="space-between" p="4">
-                    <Button size="sm" colorScheme="red">
+                    <Button
+                        size="sm"
+                        colorScheme="red"
+                        onClick={() => onClickDeleteImage(id)}
+                    >
                         Ukloni
                     </Button>
                 </Flex>
