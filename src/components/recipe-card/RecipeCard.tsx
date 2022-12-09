@@ -19,7 +19,7 @@ interface Props extends TRecipe {
 
 const RecipeCard = ({ attributes, imageHeight = 250 }: Props): ReactElement => {
     return (
-        <NextLink href={`/recept/${attributes.slug}`} shallow={true}>
+        <NextLink href={`/recept/${attributes.slug}`}>
             <Box cursor="pointer" h="fulls">
                 <Box h={imageHeight} position="relative" mb={4}>
                     <Image

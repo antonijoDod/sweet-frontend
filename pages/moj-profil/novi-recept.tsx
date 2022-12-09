@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from "react";
-import { AddImage, TextWithUnderline } from "@components";
-import { ProfileLayout, MainRecipeImage, ImagesDrawer } from "@components";
+import { AddImage, TextWithUnderline, ProfileLayout } from "@components";
+import Router from "next/router";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import {
     Button,
@@ -26,6 +26,7 @@ type FormValues = {
 };
 
 const NewRecipe = (): ReactElement => {
+    const router = Router;
     const { createRecipe, isLoading, isError } = useCreateRecipe();
 
     const [imageData, setImageData] = useState<{
@@ -60,11 +61,14 @@ const NewRecipe = (): ReactElement => {
     });
 
     const onSubmit = async (values: any) => {
-        console.log(
-            "🚀 ~ file: novi-recept.tsx:50 ~ onSubmit ~ values",
-            values
+        await createRecipe(
+            { ...values },
+            {
+                onSuccess: () => {
+                    router.push("/moj-profil");
+                },
+            }
         );
-        await createRecipe({ ...values });
     };
 
     return (
@@ -77,7 +81,7 @@ const NewRecipe = (): ReactElement => {
                         id="title"
                         placeholder="title"
                         {...register("title", {
-                            required: "This is required",
+                            required: "Naziv recepta je obavezan",
                         })}
                     />
                     <FormErrorMessage>
@@ -94,7 +98,7 @@ const NewRecipe = (): ReactElement => {
                         id="description"
                         placeholder="description"
                         {...register("description", {
-                            required: "This is required",
+                            required: "Opis je obavezan",
                         })}
                     />
                     <FormErrorMessage>
@@ -102,18 +106,20 @@ const NewRecipe = (): ReactElement => {
                     </FormErrorMessage>
                 </FormControl>
 
-                <FormControl isInvalid={errors.title ? true : false}>
+                <FormControl isInvalid={errors.main_image ? true : false}>
                     <Controller
                         name="main_image"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{
+                            required: "Odaberi sliku",
+                        }}
                         render={({ field: { ref, ...rest } }) => (
                             <AddImage {...rest} />
                         )}
                     />
 
                     <FormErrorMessage>
-                        {errors.title && errors.title.message}
+                        {errors.main_image && errors.main_image.message}
                     </FormErrorMessage>
                 </FormControl>
 
@@ -131,6 +137,7 @@ const NewRecipe = (): ReactElement => {
                                 flex={1}
                             >
                                 <Input
+                                    id={field.id}
                                     w="full"
                                     placeholder="Naziv sastojka"
                                     {...register(
@@ -178,7 +185,7 @@ const NewRecipe = (): ReactElement => {
                     <TextWithUnderline title="Koraci" />
                     {fieldsSteps.map((field, index) => (
                         <Box key={field.id} mt="4">
-                            <Input
+                            <Textarea
                                 w="full"
                                 placeholder="Opis koraka"
                                 {...register(
@@ -212,7 +219,7 @@ const NewRecipe = (): ReactElement => {
                             appendSteps({ description: "", step_image: null });
                         }}
                     >
-                        Novi sastojak
+                        Novi korak
                     </Button>
                 </Box>
                 <Button

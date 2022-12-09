@@ -36,7 +36,7 @@ const EmptyImage = ({
                 ) : (
                     <Box textAlign="center">
                         <Icon as={HiOutlineCamera} fontSize="5xl" />
-                        <Text>Dodaj novu</Text>
+                        <Text>Dodaj sliku</Text>
                     </Box>
                 )}
                 <input

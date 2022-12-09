@@ -8,6 +8,8 @@ import {
     Heading,
     HStack,
     SimpleGrid,
+    Alert,
+    AlertTitle,
 } from "@chakra-ui/react";
 import { useGetPrivateRecipes } from "@hooks";
 import NextLink from "next/link";
@@ -53,9 +55,24 @@ const MyProfile = (): ReactElement => {
                         </Button>
                     </HStack>
                 ) : (
-                    <SimpleGrid columns={2} gap={8}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
                         {privateRecipes.data.map((recipe) => (
-                            <RecipeCard key={recipe.id} {...recipe} />
+                            <Box key={recipe.id}>
+                                <RecipeCard {...recipe} />
+                                <Box mt={4}>
+                                    {recipe.attributes.publishedAt ? (
+                                        <Alert>
+                                            <AlertTitle>Objavljeno</AlertTitle>
+                                        </Alert>
+                                    ) : (
+                                        <Alert status="error">
+                                            <AlertTitle>
+                                                Ceka potvrdu admina
+                                            </AlertTitle>
+                                        </Alert>
+                                    )}
+                                </Box>
+                            </Box>
                         ))}
                     </SimpleGrid>
                 )}

@@ -5,10 +5,15 @@ import {
     Flex,
     HStack,
     Button,
-    IconButton,
+    Icon,
     Link,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuDivider,
 } from "@chakra-ui/react";
-import { HiUser } from "react-icons/hi";
+import { HiUser, HiChevronDown } from "react-icons/hi";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { NAV_ITEMS, TNavbarItem } from "./NavItems";
@@ -49,15 +54,34 @@ const HeaderBottom = (): ReactElement => {
                 </HStack>
                 <HStack>
                     {!user ? (
-                        <Button onClick={() => signIn()}>Login</Button>
+                        <Button onClick={() => signIn()}>Moj račun</Button>
                     ) : (
-                        <NextLink href="/moj-profil" shallow={true}>
-                            <IconButton
-                                rounded="full"
-                                icon={<HiUser />}
-                                aria-label="Login button"
-                            />
-                        </NextLink>
+                        <Menu>
+                            <HStack>
+                                <MenuButton
+                                    as={Button}
+                                    variant="gost"
+                                    rightIcon={<HiChevronDown />}
+                                >
+                                    Moj račun
+                                </MenuButton>
+                            </HStack>
+                            <MenuList zIndex={9999}>
+                                <MenuItem as={NextLink} href="/moj-profil">
+                                    Moj profil
+                                </MenuItem>
+                                <MenuItem
+                                    as={NextLink}
+                                    href="/moj-profil/postavke"
+                                >
+                                    Postavke
+                                </MenuItem>
+                                <MenuDivider />
+                                <MenuItem onClick={() => signOut()}>
+                                    Odjava
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
                     )}
                 </HStack>
             </Flex>
