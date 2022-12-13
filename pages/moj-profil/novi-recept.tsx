@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useRef } from "react";
 import { AddImage, TextWithUnderline, ProfileLayout } from "@components";
 import Router from "next/router";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
@@ -14,13 +14,16 @@ import {
     Stack,
     IconButton,
 } from "@chakra-ui/react";
+import Select from "react-select";
 import { HiOutlineTrash } from "react-icons/hi";
 import { useCreateRecipe } from "@hooks";
+import { useGetCategories } from "@hooks/categories";
 
 type FormValues = {
     title: string;
     main_image: number;
     description: string;
+    categories: number[];
     ingredients: { name: string; amount: string }[];
     steps: { description: string; step_image: number | null }[];
 };
@@ -28,6 +31,13 @@ type FormValues = {
 const NewRecipe = (): ReactElement => {
     const router = Router;
     const { createRecipe, isLoading, isError } = useCreateRecipe();
+    const { dataCategories, isErrorCategories, isLoadingCategories } =
+        useGetCategories();
+    const inputRef = useRef();
+
+    const [categoriesOption, setCategoriesOption] = useState<
+        { value: number; label: string }[]
+    >([]);
 
     const [imageData, setImageData] = useState<{
         id: number;
@@ -61,6 +71,10 @@ const NewRecipe = (): ReactElement => {
     });
 
     const onSubmit = async (values: any) => {
+        console.log(
+            "🚀 ~ file: novi-recept.tsx:69 ~ onSubmit ~ values",
+            values
+        );
         await createRecipe(
             { ...values },
             {
@@ -103,6 +117,40 @@ const NewRecipe = (): ReactElement => {
                     />
                     <FormErrorMessage>
                         {errors.description && errors.description.message}
+                    </FormErrorMessage>
+                </FormControl>
+
+                <FormControl
+                    mt="8"
+                    isInvalid={errors.categories ? true : false}
+                >
+                    <FormLabel htmlFor="category">Kategorija</FormLabel>
+
+                    <Controller
+                        control={control}
+                        name="categories"
+                        rules={{
+                            required: "Odaberi kategoriju",
+                        }}
+                        render={({ field: { onChange, ref } }) => (
+                            <Select
+                                isMulti
+                                isLoading={isLoadingCategories}
+                                options={dataCategories?.data.map(
+                                    (category) => ({
+                                        value: category.id,
+                                        label: category.attributes.name,
+                                    })
+                                )}
+                                onChange={(value) =>
+                                    onChange(value.map((val) => val.value))
+                                }
+                            />
+                        )}
+                    />
+
+                    <FormErrorMessage>
+                        {errors.categories && errors.categories.message}
                     </FormErrorMessage>
                 </FormControl>
 
