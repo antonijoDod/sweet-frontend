@@ -30,3 +30,5 @@ export { default as ImageRadioItem } from './image-radio-item'
 export { default as ImagesDrawer } from './images-drawer'
 export { default as MainRecipeImage } from './main-recipe-image'
 export { default as ImageItem } from './image-item'
+
+export { default as InfoWithIcon } from './info-with-icon'

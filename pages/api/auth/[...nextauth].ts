@@ -33,8 +33,8 @@ export const authOptions: NextAuthOptions = {
                     const response = await axios.post(
                         `${process.env.NEXT_PUBLIC_SERVER_API}/api/auth/local`,
                         {
-                            identifier: "userone@gmail.com",
-                            password: "user123",
+                            identifier: credentials.identifier,
+                            password: credentials.password,
                         },
                     );
                     const data = response.data;

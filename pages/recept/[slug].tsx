@@ -7,6 +7,7 @@ import {
     TextWithUnderline,
     BakeStep,
     SocialShareMenu,
+    InfoWithIcon,
 } from "@components";
 import {
     Container,
@@ -27,9 +28,11 @@ import {
     HiOutlineCalendar,
     HiUser,
     HiOutlineClock,
-    HiUsers,
     HiViewList,
+    HiOutlineUsers,
 } from "react-icons/hi";
+import { RiKnifeLine } from "react-icons/ri";
+import { GiCookingGlove } from "react-icons/gi";
 import axios from "axios";
 import { TRecipe, TRecipes } from "@types";
 import ReactMarkdown from "react-markdown";
@@ -128,66 +131,31 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                             )}
                         </Box>
                         {/* Details with icons */}
-                        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={2}>
-                            <HStack p={4} bgColor="gray.100">
-                                <Icon
-                                    as={HiOutlineClock}
-                                    fontSize="3xl"
-                                    color="gray.600"
+                        <Box bg={"gray.50"} p="6" mt={8}>
+                            <SimpleGrid columns={{ base: 1, sm: 2 }} gap={8}>
+                                <InfoWithIcon
+                                    icon={RiKnifeLine}
+                                    label="Priprema"
+                                    value="150 min"
                                 />
-                                <Box>
-                                    <Text as="b" fontSize="lg">
-                                        PRIPREMA
-                                    </Text>
-                                    <Text>
-                                        {recipe.attributes.preparing_time} min
-                                    </Text>
-                                </Box>
-                            </HStack>
-                            <HStack p={4} bgColor="gray.100">
-                                <Icon
-                                    as={HiOutlineClock}
-                                    fontSize="3xl"
-                                    color="gray.600"
+                                <InfoWithIcon
+                                    icon={GiCookingGlove}
+                                    label="Pečenje"
+                                    value="150 min"
                                 />
-                                <Box>
-                                    <Text as="b" fontSize="lg">
-                                        PEČENJE
-                                    </Text>
-                                    <Text>
-                                        {recipe.attributes.cooking_time} min
-                                    </Text>
-                                </Box>
-                            </HStack>
-                            <HStack p={4} bgColor="gray.100">
-                                <Icon
-                                    as={HiUsers}
-                                    fontSize="3xl"
-                                    color="gray.600"
+                                <InfoWithIcon
+                                    icon={HiOutlineClock}
+                                    label="Ukupno"
+                                    value="150 min"
                                 />
-                                <Box>
-                                    <Text as="b" fontSize="lg">
-                                        ZA
-                                    </Text>
-                                    <Text>
-                                        {recipe.attributes.serving_for} osoba
-                                    </Text>
-                                </Box>
-                            </HStack>
-                            <HStack p={4} bgColor="gray.100">
-                                <Icon
-                                    as={HiUsers}
-                                    fontSize="3xl"
-                                    color="gray.600"
+                                <InfoWithIcon
+                                    icon={HiOutlineUsers}
+                                    label="Za osoba"
+                                    value="5 osoba"
                                 />
-                                <Box>
-                                    <Text as="b" fontSize="lg">
-                                        ZA
-                                    </Text>
-                                    <Text>5 osoba</Text>
-                                </Box>
-                            </HStack>
-                        </SimpleGrid>
+                            </SimpleGrid>
+                        </Box>
+
                         <Box
                             my={8}
                             fontWeight={"normal"}
@@ -271,9 +239,6 @@ export async function getStaticPaths() {
         params: { slug: recipe.attributes.slug },
     }));
 
-    // We'll pre-render only these paths at build time.
-    // { fallback: blocking } will server-render pages
-    // on-demand if the path doesn't exist.
     return { paths, fallback: "blocking" };
 }
 
