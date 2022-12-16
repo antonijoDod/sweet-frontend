@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import {
     Layout,
     HeroAndBreadcrumb,
@@ -243,6 +242,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
+    console.log("🚀 ~ file: [slug].tsx:245 ~ getStaticProps ~ params", params);
     const { slug } = params;
     const recipeResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes/feed/${slug}`

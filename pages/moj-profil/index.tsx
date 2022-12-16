@@ -61,15 +61,13 @@ const MyProfile = (): ReactElement => {
                                 <RecipeCard {...recipe} />
                                 <Box mt={4}>
                                     {recipe.attributes.publishedAt ? (
-                                        <Alert>
-                                            <AlertTitle>Objavljeno</AlertTitle>
-                                        </Alert>
+                                        <Box bg="green.100" p={2}>
+                                            Objavljeno
+                                        </Box>
                                     ) : (
-                                        <Alert status="error">
-                                            <AlertTitle>
-                                                Ceka potvrdu admina
-                                            </AlertTitle>
-                                        </Alert>
+                                        <Box bg="red.100" p={2}>
+                                            Ceka potvrdu admina
+                                        </Box>
                                     )}
                                 </Box>
                             </Box>

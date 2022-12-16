@@ -51,7 +51,7 @@ const ProfileLayout = ({ children }: TProfileLayoutProps): ReactElement => {
                             </Box>
                         </GridItem>
                         <GridItem colSpan={2}>
-                            <Box bgColor="white" p={4}>
+                            <Box bgColor="white" p={8}>
                                 {children}
                             </Box>
                         </GridItem>

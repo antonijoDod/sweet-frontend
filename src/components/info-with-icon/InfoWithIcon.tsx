@@ -19,7 +19,7 @@ const InfoWithIcon = ({
                 <Heading as="h3" fontSize="xl" color="gray.500">
                     {label}
                 </Heading>
-                <Text>{value}</Text>
+                <Text as="b">{value}</Text>
             </Box>
         </HStack>
     );

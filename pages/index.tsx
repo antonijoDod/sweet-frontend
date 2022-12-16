@@ -23,19 +23,14 @@ import { TRecipes } from "@types";
 
 type THomeProps = {
     recipes: TRecipes;
-    popularRecipes: TRecipes;
+    sliderRecipes: TRecipes;
 };
 
-const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {
-    console.log(
-        "🚀 ~ file: index.tsx:30 ~ Home ~ popularRecipes",
-        popularRecipes
-    );
-    console.log("🚀 ~ file: index.tsx:30 ~ Home ~ recipes", recipes);
+const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
     return (
         <Layout>
             <Container as="section" maxW="container.xl">
-                <HeroSlider recipes={popularRecipes?.data.slice(0, 3)} />
+                <HeroSlider recipes={sliderRecipes?.data.slice(0, 3)} />
             </Container>
             <Container as="section" maxW="container.xl" mt={16}>
                 <Grid
@@ -48,19 +43,19 @@ const Home = ({ recipes, popularRecipes }: THomeProps): ReactElement => {
                             fontSize="2xl"
                         />
                         <Box>
-                            {popularRecipes?.data && (
+                            {recipes?.data && recipes.data.length > 0 ? (
                                 <RecipeCard
                                     imageHeight={450}
-                                    {...popularRecipes.data[0]}
+                                    {...recipes.data[0]}
                                 />
-                            )}
+                            ) : null}
                             <SimpleGrid
                                 columns={{ base: 1, md: 2 }}
                                 gap="8"
                                 mt={8}
                             >
-                                {popularRecipes?.data
-                                    ? popularRecipes.data
+                                {recipes?.data && recipes.data.length > 0
+                                    ? recipes.data
                                           .slice(1, 9)
                                           .map((recipe) => (
                                               <RecipeCard
@@ -126,15 +121,15 @@ export async function getServerSideProps() {
     );
     const recipes = recipesResponse.data;
 
-    const popularRecipesResponse = await axios.get(
+    const sliderRecipesResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?filters[isPopular][$eq]=true&sort[publishedAt]=Desc`
     );
-    const popularRecipes = popularRecipesResponse.data;
+    const sliderRecipes = sliderRecipesResponse.data;
 
     return {
         props: {
             recipes: recipes,
-            popularRecipes: popularRecipes,
+            sliderRecipes: sliderRecipes,
         },
     };
 }
