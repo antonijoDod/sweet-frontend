@@ -3,7 +3,7 @@ import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
 import { SimpleGrid, Input, Flex, Box } from "@chakra-ui/react";
 import { useGetPublishedRecipes } from "@hooks";
 import ReactPaginate from "react-paginate";
-import { RecipeCard } from "@components";
+import { RecipeCard, Pagination } from "@components";
 import { TRecipes } from "@types";
 import axios from "axios";
 import styles from "./filter-list.module.css";
@@ -22,9 +22,7 @@ const FilterList = ({
     isError,
     onTextChange,
 }: TFilterListProps): ReactElement => {
-    const handlePageClick = (event: any) => {
-        console.log(event);
-    };
+    const handlePageChange = (selectedPageId: number) => {};
 
     if (isLoading) return <>Loading</>;
     if (isError) return <>Something went wrong</>;
@@ -48,24 +46,14 @@ const FilterList = ({
             ) : (
                 "Loading"
             )}
-            <Box display="flex" w="full">
-                <ReactPaginate
-                    breakLabel="..."
-                    previousLabel={<HiChevronLeft />}
-                    nextLabel={<HiChevronRight />}
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={3}
-                    pageCount={20}
-                    // @ts-ignore
-                    renderOnZeroPageCount={null}
-                    containerClassName={styles.container}
-                    pageLinkClassName={styles.pagination__link}
-                    previousLinkClassName={styles.pagination__link__prev}
-                    nextLinkClassName={styles.pagination__link__next}
-                    disabledClassName={styles.pagination__link_disabled}
-                    activeClassName={styles.pagination__link__active}
+            {recipes?.data.length > 0 ? (
+                <Pagination
+                    onPageChange={(selectedPageId) =>
+                        handlePageChange(selectedPageId)
+                    }
+                    pageCount={recipes.meta.pagination.pageCount}
                 />
-            </Box>
+            ) : null}
         </>
     );
 };

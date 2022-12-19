@@ -32,3 +32,4 @@ export { default as MainRecipeImage } from './main-recipe-image'
 export { default as ImageItem } from './image-item'
 
 export { default as InfoWithIcon } from './info-with-icon'
+export { default as Pagination } from './pagination'
