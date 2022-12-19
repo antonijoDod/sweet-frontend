@@ -20,6 +20,7 @@ const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
 
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [imageId, setImageId] = useState<number | null>(null);
+    const [imageUploadId, setImageUploadId] = useState<number | null>(null);
 
     const handleUploadImage = async (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -39,6 +40,7 @@ const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
                             .thumbnail.url
                     );
                     setImageId(data.data.attributes.media.data.id);
+                    setImageUploadId(data.data.id);
                     onChange(data.data.attributes.media.data.id);
                 },
             });
@@ -69,9 +71,11 @@ const AddImage = ({ onChange }: TAddImageProps): ReactElement => {
         />
     ) : (
         <ImageExist
-            id={imageId!}
+            id={imageUploadId!}
             imageUrl={imageUrl}
-            onClickDeleteImage={(imageId) => handleDeleteImage(imageId)}
+            onClickDeleteImage={(imageUploadId) =>
+                handleDeleteImage(imageUploadId)
+            }
         />
     );
 };

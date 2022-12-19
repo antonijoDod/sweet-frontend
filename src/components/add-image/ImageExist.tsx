@@ -5,7 +5,7 @@ import Image from "next/image";
 type TImageExistProps = {
     id: number;
     imageUrl: string;
-    onClickDeleteImage: (imageId: number) => void;
+    onClickDeleteImage: (imageUploadId: number) => void;
 };
 
 const ImageExist = ({
