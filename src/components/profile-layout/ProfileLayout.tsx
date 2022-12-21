@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Layout } from "@components";
 import {
     Box,
@@ -11,12 +11,15 @@ import {
     MenuList,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 
 type TProfileLayoutProps = {
     children: ReactNode;
 };
 
 const ProfileLayout = ({ children }: TProfileLayoutProps): ReactElement => {
+    const router = useRouter();
+
     return (
         <Layout>
             <Box bgColor="gray.100" py={16}>
@@ -36,6 +39,11 @@ const ProfileLayout = ({ children }: TProfileLayoutProps): ReactElement => {
                                         href="/moj-profil"
                                         borderBottom="1px"
                                         borderBottomColor="gray.300"
+                                        backgroundColor={
+                                            router.pathname === "/moj-profil"
+                                                ? "red.500"
+                                                : "white"
+                                        }
                                     >
                                         Moji recepti
                                     </MenuItem>
@@ -44,6 +52,12 @@ const ProfileLayout = ({ children }: TProfileLayoutProps): ReactElement => {
                                         href="/moj-profil/postavke"
                                         borderBottom="1px"
                                         borderBottomColor="gray.300"
+                                        backgroundColor={
+                                            router.pathname ===
+                                            "/moj-profil/postavke"
+                                                ? "red.500"
+                                                : "white"
+                                        }
                                     >
                                         Postavke
                                     </MenuItem>

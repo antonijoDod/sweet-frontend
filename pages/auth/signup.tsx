@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Router from "next/router";
 import NextLink from "next/link";
+import { useRegisterUser } from "@hooks/auth";
 import {
     Alert,
-    AlertDescription,
     Box,
     Button,
     Checkbox,
@@ -24,16 +24,15 @@ import {
 import { useForm } from "react-hook-form";
 
 type TFormValues = {
-    identifier: string;
+    username: string;
+    email: string;
     password: string;
 };
 
-const SignIn = () => {
+const SignUp = () => {
     const { status } = useSession();
     const router = Router;
-
-    const [isLoginError, setIsLoginError] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const registerUser = useRegisterUser();
 
     const {
         handleSubmit,
@@ -52,22 +51,22 @@ const SignIn = () => {
     };
 
     const onSubmit = async ({
-        identifier,
+        username,
+        email,
         password,
     }: {
-        identifier: string;
+        username: string;
+        email: string;
         password: string;
     }) => {
-        setIsLoading(true);
-        const res = await signIn("credentials", {
-            identifier,
-            password,
-            redirect: false,
-        });
-        if (!res?.ok) {
-            setIsLoginError(true);
-            setIsLoading(false);
-        }
+        await registerUser.mutate(
+            { email, password, username },
+            {
+                onSuccess: () => {
+                    router.push("/auth/signin");
+                },
+            }
+        );
     };
 
     return (
@@ -96,17 +95,17 @@ const SignIn = () => {
                                     md: "sm",
                                 })}
                             >
-                                Prijavi se u svoj račun
+                                Kreiraj novi račun
                             </Heading>
                             <HStack spacing="1" justify="center">
-                                <Text color="muted">Još nemaš račun?</Text>
+                                <Text color="muted">Imaš postojeći račun?</Text>
                                 <Button
                                     as={NextLink}
-                                    href="/auth/signup"
+                                    href="/auth/signin"
                                     variant="link"
                                     colorScheme="blue"
                                 >
-                                    Registriraj se
+                                    Prijavi se
                                 </Button>
                             </HStack>
                         </Stack>
@@ -128,17 +127,25 @@ const SignIn = () => {
                             <Stack spacing="6">
                                 <Stack spacing="5">
                                     <FormControl>
-                                        <FormLabel htmlFor="identifier">
+                                        <FormLabel htmlFor="username">
+                                            Korisničko ime
+                                        </FormLabel>
+                                        <Input
+                                            id="username"
+                                            placeholder="npr. ivan123 (vidljivo na receptu)"
+                                            type="text"
+                                            {...register("username")}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="email">
                                             Email
                                         </FormLabel>
                                         <Input
-                                            id="identifier"
-                                            placeholder="email"
+                                            id="email"
+                                            placeholder="npr. ivan123@gmail.com"
                                             type="email"
-                                            onClick={() =>
-                                                setIsLoginError(false)
-                                            }
-                                            {...register("identifier")}
+                                            {...register("email")}
                                         />
                                     </FormControl>
                                     <FormControl>
@@ -149,40 +156,30 @@ const SignIn = () => {
                                             id="password"
                                             placeholder="password"
                                             type="password"
-                                            onClick={() =>
-                                                setIsLoginError(false)
-                                            }
                                             {...register("password")}
                                         />
                                     </FormControl>
                                 </Stack>
-                                <HStack justify="space-between">
-                                    <Checkbox defaultChecked>
-                                        Upamti me
-                                    </Checkbox>
-                                    <Button
-                                        variant="link"
-                                        colorScheme="blue"
-                                        size="sm"
-                                    >
-                                        Zaboravljena lozinka?
-                                    </Button>
-                                </HStack>
                                 <Stack spacing="6">
                                     <Button
                                         type="submit"
                                         colorScheme="green"
                                         variant="solid"
-                                        isLoading={isLoading}
+                                        isLoading={registerUser.isLoading}
                                     >
-                                        Prijavi se
+                                        Kreiraj račun
                                     </Button>
                                 </Stack>
                             </Stack>
                         </form>
-                        {isLoginError && (
+                        {registerUser.isError && (
                             <Alert status="error" mt={4}>
-                                Provjerite korisnicko ime i lozinku
+                                {registerUser.error?.response.data.error
+                                    .message ===
+                                "Email or Username are already taken"
+                                    ? "Korisničko ime ili email već postoji"
+                                    : registerUser.error?.response.data.error
+                                          .message}
                             </Alert>
                         )}
                     </Box>
@@ -192,4 +189,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default SignUp;
