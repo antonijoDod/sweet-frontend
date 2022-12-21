@@ -71,10 +71,6 @@ const NewRecipe = (): ReactElement => {
     });
 
     const onSubmit = async (values: any) => {
-        console.log(
-            "🚀 ~ file: novi-recept.tsx:69 ~ onSubmit ~ values",
-            values
-        );
         await createRecipe(
             { ...values },
             {

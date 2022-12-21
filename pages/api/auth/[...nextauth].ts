@@ -64,5 +64,8 @@ export const authOptions: NextAuthOptions = {
             return Promise.resolve(token);
         },
     },
+    pages: {
+        signIn: '/auth/signin',
+    }
 };
 export default NextAuth(authOptions);

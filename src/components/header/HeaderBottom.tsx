@@ -54,7 +54,14 @@ const HeaderBottom = (): ReactElement => {
                 </HStack>
                 <HStack>
                     {!user ? (
-                        <Button onClick={() => signIn()}>Moj račun</Button>
+                        <Button
+                            colorScheme="red"
+                            variant="outline"
+                            leftIcon={<HiUser />}
+                            onClick={() => signIn()}
+                        >
+                            Prijavi se
+                        </Button>
                     ) : (
                         <Menu>
                             <HStack>

@@ -8,14 +8,29 @@ import {
     Heading,
     HStack,
     SimpleGrid,
-    Alert,
-    AlertTitle,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { useGetPrivateRecipes } from "@hooks";
 import NextLink from "next/link";
 
 const MyProfile = (): ReactElement => {
+    const { isOpen, onToggle, onClose } = useDisclosure();
     const { privateRecipes, isLoading, isError } = useGetPrivateRecipes();
+
+    const handleDeleteRecipe = (id: number) => {
+        console.log("🚀 ~ file: index.tsx:21 ~ handleDeleteRecipe ~ id", id);
+    };
+
+    // When I choose to delete a recipe, I want to show a popover with a confirmation
+    // message and two buttons: "Yes" and "No". If I click "Yes", I want to delete
+
+    // run handleDeleteRecipe(id)
+    // open popover
+    // When i click "Yes", I want to call hook deleteRecipe(id) and close the popover
+    // If is success, I want to refresh react-query cache and close the popover
+    // Show toast message "Recipe is deleted"
+
+    // if I click "No", I want to close the popover
 
     if (isLoading)
         return (
@@ -58,8 +73,7 @@ const MyProfile = (): ReactElement => {
                     <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
                         {privateRecipes.data.map((recipe) => (
                             <Box key={recipe.id}>
-                                <RecipeCard {...recipe} />
-                                <Box mt={4}>
+                                <Box mb={2}>
                                     {recipe.attributes.publishedAt ? (
                                         <Box bg="green.100" p={2}>
                                             Objavljeno
@@ -70,6 +84,17 @@ const MyProfile = (): ReactElement => {
                                         </Box>
                                     )}
                                 </Box>
+                                <RecipeCard {...recipe} />
+                                <Button
+                                    onClick={() =>
+                                        handleDeleteRecipe(recipe.id)
+                                    }
+                                    mt={4}
+                                    size="xs"
+                                    variant="outline"
+                                >
+                                    Delete
+                                </Button>
                             </Box>
                         ))}
                     </SimpleGrid>
