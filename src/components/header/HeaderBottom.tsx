@@ -41,7 +41,6 @@ const DesktopNavItem = ({ item }: { item: TNavbarItem }): ReactElement => {
 
 const HeaderBottom = (): ReactElement => {
     const { data: session, status } = useSession();
-
     const user = session?.user;
     const isLoadingUser = status === "loading";
     return (

@@ -17,7 +17,7 @@ export const useDeletePrivateUpload = () => {
         }
     }, [status])
 
-    const deletePrivateUpload = async (privateUploadId) => {
+    const deletePrivateUpload = async (privateUploadId: number) => {
         const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_API}/api/private-uploads/${privateUploadId}`, { headers: { "Authorization": `Bearer ${jwt}` } })
         return response.data
     }

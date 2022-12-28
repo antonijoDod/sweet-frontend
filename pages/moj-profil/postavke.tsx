@@ -5,10 +5,7 @@ import { Box } from "@chakra-ui/react";
 const Settings = () => {
     return (
         <ProfileLayout>
-            {" "}
-            <Box bgColor="red.100" h="48">
-                Stranica za postavke
-            </Box>
+            <Box h="48">Ova stranica je u izradi</Box>
         </ProfileLayout>
     );
 };

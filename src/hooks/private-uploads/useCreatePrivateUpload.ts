@@ -13,11 +13,11 @@ export const useCreatePrivateUpload = () => {
 
     useEffect(() => {
         if (status !== "loading" && status === "authenticated") {
-            setJwt(session.jwt)
+            setJwt(session.user.jwt)
         }
     }, [status])
 
-    const postPrivateUpload = async (formData) => {
+    const postPrivateUpload = async (formData: any) => {
         console.log("🚀 ~ file: useCreatePrivateUpload.ts:20 ~ postPrivateUpload ~ file", formData)
         const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_API}/api/private-uploads`, formData, { headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${jwt}` } })
         return response.data

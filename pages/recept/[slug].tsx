@@ -21,18 +21,6 @@ import {
     SimpleGrid,
     Checkbox,
     Flex,
-    Button,
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverCloseButton,
-    PopoverContent,
-    PopoverHeader,
-    PopoverTrigger,
-    useDisclosure,
-    PopoverFooter,
-    ButtonGroup,
-    Alert,
 } from "@chakra-ui/react";
 import {
     HiHeart,
@@ -75,61 +63,9 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
     return (
         <Layout>
             <HeroAndBreadcrumb title={recipe.attributes.title} />
-            <Container maxW="container.xl" mt="16">
+            <Container maxW="container.xl" my="16">
                 <Grid gap={16} templateColumns={{ md: "repeat(3, 1fr)" }}>
                     <GridItem colSpan={2}>
-                        {status === "authenticated" &&
-                            session?.id === recipe.attributes.owner.data.id && (
-                                <>
-                                    <Button
-                                        onClick={() => setIsModalOpen(true)}
-                                    >
-                                        Delete
-                                    </Button>
-                                    <Popover isOpen={isModalOpen}>
-                                        <PopoverContent>
-                                            <PopoverArrow />
-                                            <PopoverCloseButton />
-                                            <PopoverHeader>
-                                                Obriši recept?
-                                            </PopoverHeader>
-                                            <PopoverBody>
-                                                Da li ste sigurni da želite
-                                                obrisati ovaj recept?
-                                                {deleteRecipe.isError && (
-                                                    <Alert status="error">
-                                                        {deleteRecipe?.error}
-                                                    </Alert>
-                                                )}
-                                            </PopoverBody>
-                                            <PopoverFooter>
-                                                <ButtonGroup>
-                                                    <Button
-                                                        onClick={() =>
-                                                            setIsModalOpen(
-                                                                false
-                                                            )
-                                                        }
-                                                    >
-                                                        Ne
-                                                    </Button>
-                                                    <Button
-                                                        onClick={
-                                                            handleDeleteRecipe
-                                                        }
-                                                        colorScheme="red"
-                                                        isLoading={
-                                                            deleteRecipe.isLoading
-                                                        }
-                                                    >
-                                                        Da, obriši
-                                                    </Button>
-                                                </ButtonGroup>
-                                            </PopoverFooter>
-                                        </PopoverContent>
-                                    </Popover>
-                                </>
-                            )}
                         <HStack alignItems="center" mb={4}>
                             <Text>Bez kategorije</Text>
                         </HStack>
@@ -292,7 +228,7 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                             )}
                         </Box>
                     </GridItem>
-                    <GridItem colSpan={1}>2</GridItem>
+                    {/*  <GridItem colSpan={1}>2</GridItem> */}
                 </Grid>
             </Container>
         </Layout>

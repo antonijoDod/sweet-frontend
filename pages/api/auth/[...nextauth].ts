@@ -51,15 +51,18 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         session: async ({ session, token }) => {
+            // @ts-ignore
             session.id = token.id;
+            // @ts-ignore
             session.jwt = token.jwt;
             return Promise.resolve(session);
         },
         jwt: async ({ token, user }) => {
             const isSignIn = user ? true : false;
             if (isSignIn) {
-                token.id = user.id;
-                token.jwt = user.jwt;
+                token.id = user?.id;
+                // @ts-ignore
+                token.jwt = user?.jwt;
             }
             return Promise.resolve(token);
         },
