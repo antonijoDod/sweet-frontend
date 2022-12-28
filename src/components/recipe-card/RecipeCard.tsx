@@ -10,7 +10,7 @@ import {
     Flex,
     Icon,
 } from "@chakra-ui/react";
-import { HiStar, HiOutlineStar } from "react-icons/hi";
+import { HiClock, HiUser, HiOutlineHeart } from "react-icons/hi";
 import { TRecipe } from "@types";
 
 interface Props extends TRecipe {
@@ -73,13 +73,16 @@ const RecipeCard = ({ attributes, imageHeight = 250 }: Props): ReactElement => {
                         </Heading>
                     </Box>
                 </Flex>
-                <HStack color="red.500">
-                    <Icon as={HiStar} fontSize="xl" />
-                    <Icon as={HiStar} fontSize="xl" />
-                    <Icon as={HiStar} fontSize="xl" />
-                    <Icon as={HiStar} fontSize="xl" />
-                    <Icon as={HiOutlineStar} fontSize="xl" />
-                </HStack>
+                <Stack justifyContent="start" direction="row" spacing="4">
+                    <HStack spacing={2} align="center">
+                        <Icon as={HiClock} color="red.500" fontSize="xl" />
+                        <Text>15 min</Text>
+                    </HStack>
+                    <HStack spacing={2} align="center">
+                        <Icon as={HiUser} color="red.500" fontSize="xl" />
+                        <Text>Martina</Text>
+                    </HStack>
+                </Stack>
             </Box>
         </NextLink>
     );

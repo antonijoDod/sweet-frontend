@@ -21,6 +21,18 @@ import {
     SimpleGrid,
     Checkbox,
     Flex,
+    Button,
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverHeader,
+    PopoverTrigger,
+    useDisclosure,
+    PopoverFooter,
+    ButtonGroup,
+    Alert,
 } from "@chakra-ui/react";
 import {
     HiHeart,
@@ -36,28 +48,88 @@ import axios from "axios";
 import { TRecipe, TRecipes } from "@types";
 import ReactMarkdown from "react-markdown";
 import { format } from "date-fns";
-
-const breadcrumbItems = [
-    { label: "Početna", href: "/" },
-    { label: "Detalji recepta", href: "/recepti" },
-];
+import { useSession } from "next-auth/react";
+import { useDeleteRecipe } from "@hooks/recipes";
+import { useRouter } from "next/router";
 
 type TRecipeProps = {
     recipe: TRecipe;
 };
 
 const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
+    const { data: session, status } = useSession();
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const deleteRecipe = useDeleteRecipe();
+    const router = useRouter();
+
+    const handleDeleteRecipe = async () => {
+        await deleteRecipe.mutate(recipe.id, {
+            onSuccess: () => {
+                router.push("/moj-profil");
+            },
+        });
+    };
+
     if (!recipe) return <Text>Something is wrong</Text>;
 
     return (
         <Layout>
-            <HeroAndBreadcrumb
-                title={recipe.attributes.title}
-                breadcrumbItems={breadcrumbItems}
-            />
+            <HeroAndBreadcrumb title={recipe.attributes.title} />
             <Container maxW="container.xl" mt="16">
                 <Grid gap={16} templateColumns={{ md: "repeat(3, 1fr)" }}>
                     <GridItem colSpan={2}>
+                        {status === "authenticated" &&
+                            session?.id === recipe.attributes.owner.data.id && (
+                                <>
+                                    <Button
+                                        onClick={() => setIsModalOpen(true)}
+                                    >
+                                        Delete
+                                    </Button>
+                                    <Popover isOpen={isModalOpen}>
+                                        <PopoverContent>
+                                            <PopoverArrow />
+                                            <PopoverCloseButton />
+                                            <PopoverHeader>
+                                                Obriši recept?
+                                            </PopoverHeader>
+                                            <PopoverBody>
+                                                Da li ste sigurni da želite
+                                                obrisati ovaj recept?
+                                                {deleteRecipe.isError && (
+                                                    <Alert status="error">
+                                                        {deleteRecipe?.error}
+                                                    </Alert>
+                                                )}
+                                            </PopoverBody>
+                                            <PopoverFooter>
+                                                <ButtonGroup>
+                                                    <Button
+                                                        onClick={() =>
+                                                            setIsModalOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                    >
+                                                        Ne
+                                                    </Button>
+                                                    <Button
+                                                        onClick={
+                                                            handleDeleteRecipe
+                                                        }
+                                                        colorScheme="red"
+                                                        isLoading={
+                                                            deleteRecipe.isLoading
+                                                        }
+                                                    >
+                                                        Da, obriši
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </PopoverFooter>
+                                        </PopoverContent>
+                                    </Popover>
+                                </>
+                            )}
                         <HStack alignItems="center" mb={4}>
                             <Text>Bez kategorije</Text>
                         </HStack>
@@ -154,7 +226,6 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                                 />
                             </SimpleGrid>
                         </Box>
-
                         <Box
                             my={8}
                             fontWeight={"normal"}
@@ -242,7 +313,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
-    console.log("🚀 ~ file: [slug].tsx:245 ~ getStaticProps ~ params", params);
     const { slug } = params;
     const recipeResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes/feed/${slug}`

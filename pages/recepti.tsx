@@ -41,10 +41,10 @@ const Recipes = (): ReactElement => {
 
     return (
         <Layout>
-            {/*  <HeroAndBreadcrumb
+            <HeroAndBreadcrumb
                 title="Pretraži recepte"
                 breadcrumbItems={breadcrumbItems}
-            /> */}
+            />
             <Container maxW="container.xl">
                 <Grid gridGap="8" templateColumns={{ md: "repeat(3, 1fr)" }}>
                     <GridItem colSpan={2}>

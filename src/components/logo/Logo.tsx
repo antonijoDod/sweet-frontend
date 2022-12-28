@@ -5,7 +5,7 @@ import { Box } from "@chakra-ui/react";
 const Logo = ({ ...rest }): ReactElement => {
     return (
         <Box position="relative" {...rest}>
-            <Image src="/images/logo.png" layout="fill" alt="Logo" />
+            <Image src="/images/logokolaci.png" layout="fill" alt="Logo" />
         </Box>
     );
 };

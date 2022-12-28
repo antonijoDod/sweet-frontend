@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -15,10 +15,14 @@ import { HiChevronRight } from "react-icons/hi";
 
 interface Props {
     title: string;
-    breadcrumbItems: { label: string; href: string }[];
 }
 
-const HeroAndBreadcrumb = ({ title, breadcrumbItems }: Props): ReactElement => {
+const breadcrumbItems = [
+    { label: "Početna", href: "/" },
+    { label: "Recepti", href: "/recepti" },
+];
+
+const HeroAndBreadcrumb = ({ title }: Props): ReactElement => {
     const { pathname } = useRouter();
 
     return (
@@ -56,16 +60,20 @@ const HeroAndBreadcrumb = ({ title, breadcrumbItems }: Props): ReactElement => {
                         spacing="8px"
                         separator={<HiChevronRight color="gray.500" />}
                     >
-                        {breadcrumbItems.map(({ label, href }) => (
-                            <BreadcrumbItem
-                                key={label}
-                                isCurrentPage={href === pathname ? true : false}
-                            >
-                                <BreadcrumbLink as={Link} href={href ?? "#"}>
-                                    {label}
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                        ))}
+                        {breadcrumbItems.map(({ label, href }) => {
+                            return (
+                                <BreadcrumbItem
+                                    key={label}
+                                    isCurrentPage={
+                                        href === pathname ? true : false
+                                    }
+                                >
+                                    <NextLink href={href ?? "#"}>
+                                        {label}
+                                    </NextLink>
+                                </BreadcrumbItem>
+                            );
+                        })}
                     </Breadcrumb>
                 </Container>
             </Box>
