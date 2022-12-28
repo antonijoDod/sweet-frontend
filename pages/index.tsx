@@ -32,7 +32,7 @@ const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
             <Container as="section" maxW="container.xl">
                 <HeroSlider recipes={sliderRecipes?.data.slice(0, 3)} />
             </Container>
-            <Container as="section" maxW="container.xl" mt={16}>
+            <Container as="section" maxW="container.xl" my={16}>
                 <Grid
                     templateColumns={{ base: "none", lg: "repeat(3, 1fr)" }}
                     gap={8}

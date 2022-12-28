@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
+import { useSession, signIn } from "next-auth/react";
 import {
     Box,
     Container,
@@ -14,12 +15,8 @@ import {
     useDisclosure,
     Button,
 } from "@chakra-ui/react";
-import {  Logo } from "@components";
-import {
-    HiOutlineMenuAlt3,
-    HiSearch,
-    HiUser,
-} from "react-icons/hi";
+import { Logo } from "@components";
+import { HiOutlineMenuAlt3, HiSearch, HiUser } from "react-icons/hi";
 
 import { NAV_ITEMS, TNavbarItem } from "./NavItems";
 
@@ -39,7 +36,7 @@ const NavbarItem = ({ label, href }: TNavbarItem): ReactElement => {
         <Stack spacing={4} onClick={() => onToggle}>
             <Flex
                 py={2}
-                as={Link}
+                as={NextLink}
                 href={href ?? "#"}
                 justify={"space-between"}
                 align="start"
@@ -59,6 +56,8 @@ const NavbarItem = ({ label, href }: TNavbarItem): ReactElement => {
 
 const MobileHeader = (): ReactElement => {
     const [isOpen, setIsOpen] = useBoolean();
+    const { data: session, status } = useSession();
+    const user = session?.user;
     return (
         <Box
             position="fixed"
@@ -75,22 +74,32 @@ const MobileHeader = (): ReactElement => {
                     width="100%"
                     h="16"
                 >
-                    <Logo height="28px" width="90px" />
+                    <NextLink href="/">
+                        <Logo height="28px" width="90px" />
+                    </NextLink>
                     <HStack>
                         <IconButton
                             icon={<HiSearch />}
                             aria-label="Search button"
                             variant="ghost"
                         />
-
-                        <Button size="sm" colorScheme="red">
-                            Dodaj recept
-                        </Button>
-                        <IconButton
-                            icon={<HiUser />}
-                            aria-label="Login button"
-                            variant="ghost"
-                        />
+                        {!user ? (
+                            <Button
+                                aria-label="Login button"
+                                variant="outline"
+                                onClick={() => signIn()}
+                            >
+                                Prijavi se
+                            </Button>
+                        ) : (
+                            <IconButton
+                                icon={<HiUser />}
+                                aria-label="Login button"
+                                variant="ghost"
+                                as={NextLink}
+                                href="/moj-profil"
+                            />
+                        )}
                         <IconButton
                             icon={<HiOutlineMenuAlt3 />}
                             aria-label="Toggle menu"

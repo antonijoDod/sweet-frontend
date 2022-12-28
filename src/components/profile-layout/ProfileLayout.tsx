@@ -25,7 +25,7 @@ const ProfileLayout = ({ children }: TProfileLayoutProps): ReactElement => {
             <Box bgColor="gray.100" py={16}>
                 <Container maxW="container.xl">
                     <Grid
-                        gridGap="8"
+                        gap={8}
                         templateColumns={{
                             base: "repeat(1, 1fr)",
                             md: "repeat(3, 1fr)",
@@ -64,7 +64,7 @@ const ProfileLayout = ({ children }: TProfileLayoutProps): ReactElement => {
                                 </Menu>
                             </Box>
                         </GridItem>
-                        <GridItem colSpan={2}>
+                        <GridItem colSpan={{ base: 1, md: 2 }}>
                             <Box bgColor="white" p={8}>
                                 {children}
                             </Box>

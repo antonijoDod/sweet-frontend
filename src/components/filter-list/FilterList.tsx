@@ -46,14 +46,16 @@ const FilterList = ({
             ) : (
                 "Loading"
             )}
-            {recipes?.data.length > 0 ? (
-                <Pagination
-                    onPageChange={(selectedPageId) =>
-                        handlePageChange(selectedPageId)
-                    }
-                    pageCount={recipes.meta.pagination.pageCount}
-                />
-            ) : null}
+            {recipes?.data.length > 0
+                ? recipes.meta.pagination.pageCount > 1 && (
+                      <Pagination
+                          onPageChange={(selectedPageId) =>
+                              handlePageChange(selectedPageId)
+                          }
+                          pageCount={recipes.meta.pagination.pageCount}
+                      />
+                  )
+                : null}
         </>
     );
 };

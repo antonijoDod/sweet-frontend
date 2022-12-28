@@ -42,7 +42,6 @@ const DesktopNavItem = ({ item }: { item: TNavbarItem }): ReactElement => {
 const HeaderBottom = (): ReactElement => {
     const { data: session, status } = useSession();
     const user = session?.user;
-    const isLoadingUser = status === "loading";
     return (
         <Container maxW="container.xl">
             <Flex justifyContent="space-between" h={24} align="center">

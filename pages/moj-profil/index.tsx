@@ -46,7 +46,7 @@ const MyProfile = (): ReactElement => {
 
     return (
         <ProfileLayout>
-            <Box p={8}>
+            <Box>
                 <Box mb={8}>
                     <HStack justifyContent="space-between">
                         <Heading size="lg">Moji recepti</Heading>
