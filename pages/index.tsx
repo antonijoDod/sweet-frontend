@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-
+import Head from "next/head";
 import {
     Box,
     Container,
@@ -29,6 +29,9 @@ type THomeProps = {
 const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
     return (
         <Layout>
+            <Head>
+                <title>Jednostavni kolači</title>
+            </Head>
             <Container as="section" maxW="container.xl">
                 <HeroSlider recipes={sliderRecipes?.data.slice(0, 3)} />
             </Container>
