@@ -18,34 +18,16 @@ const RecentCard = ({ id, attributes }: TRecipe): ReactElement => {
                 >
                     <Image
                         src={
-                            attributes.main_image.data
+                            attributes.featured_image.data
                                 ? process.env.NEXT_PUBLIC_SERVER_API +
-                                  attributes.main_image.data.attributes.formats
-                                      .thumbnail.url
+                                  attributes.featured_image.data.attributes
+                                      .formats.thumbnail.url
                                 : "/images/kolac.jpg"
                         }
                         layout="fill"
                         objectFit="cover"
                         alt={attributes.title}
                     />
-                    <Box
-                        rounded="full"
-                        color="white"
-                        bgColor="pink.500"
-                        opacity={0.9}
-                        h={10}
-                        w={10}
-                        position="absolute"
-                        bottom={0}
-                        right={0}
-                        marginRight="-1"
-                        marginBottom="-1"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        1
-                    </Box>
                 </Box>
                 <Box>
                     <Box
@@ -70,7 +52,7 @@ const RecentCard = ({ id, attributes }: TRecipe): ReactElement => {
                         <Text>
                             {format(
                                 new Date(attributes.publishedAt),
-                                "dd.MM.yyyy",
+                                "dd.MM.yyyy"
                             )}
                         </Text>
                     </HStack>

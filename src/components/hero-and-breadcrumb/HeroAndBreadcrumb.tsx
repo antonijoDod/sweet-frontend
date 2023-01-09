@@ -28,7 +28,7 @@ const HeroAndBreadcrumb = ({ title }: Props): ReactElement => {
     return (
         <Box as="section" position="relative">
             <Image
-                src="/images/inner-page-banner1.jpg"
+                src="/images/banner.png"
                 layout="fill"
                 objectFit="cover"
                 alt={title}
@@ -43,7 +43,7 @@ const HeroAndBreadcrumb = ({ title }: Props): ReactElement => {
                     bottom: 0,
                     left: 0,
                     backgroundColor: "red.500",
-                    opacity: 0.97,
+                    opacity: 0.7,
                 }}
             >
                 <Container

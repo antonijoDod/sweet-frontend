@@ -1,13 +1,14 @@
 import React, { ReactElement, useState } from "react";
 import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
-import { SimpleGrid, Input, Flex, Box } from "@chakra-ui/react";
-import { useGetPublishedRecipes } from "@hooks";
+import { SimpleGrid, Input, Text, Box, HStack } from "@chakra-ui/react";
+import { useGetRecipes } from "@hooks/recipes";
 import ReactPaginate from "react-paginate";
 import { RecipeCard, Pagination } from "@components";
 import { TRecipes } from "@types";
 import axios from "axios";
 import styles from "./filter-list.module.css";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import Select from "react-select";
 
 type TFilterListProps = {
     recipes: TRecipes;

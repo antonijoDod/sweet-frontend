@@ -24,14 +24,15 @@ const RecipeCard = ({ attributes, imageHeight = 250 }: Props): ReactElement => {
                 <Box h={imageHeight} position="relative" mb={4}>
                     <Image
                         src={
-                            attributes.main_image.data
-                                ? attributes.main_image.data.attributes.formats
-                                      .small
+                            attributes.featured_image.data
+                                ? attributes.featured_image.data.attributes
+                                      .formats.small
                                     ? process.env.NEXT_PUBLIC_SERVER_API +
-                                      attributes.main_image.data?.attributes
+                                      attributes.featured_image.data?.attributes
                                           .formats.small.url
                                     : process.env.NEXT_PUBLIC_SERVER_API +
-                                      attributes.main_image.data?.attributes.url
+                                      attributes.featured_image.data?.attributes
+                                          .url
                                 : "/images/no-image.jpg"
                         }
                         layout="fill"

@@ -242,7 +242,6 @@ const NewRecipe = (): ReactElement => {
                             <Controller
                                 name={`steps.${index}.step_image` as const}
                                 control={control}
-                                rules={{ required: true }}
                                 render={({ field: { ref, ...rest } }) => (
                                     <AddImage {...rest} />
                                 )}

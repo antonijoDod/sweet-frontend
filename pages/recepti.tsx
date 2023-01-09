@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, ChangeEvent } from "react";
-import { useGetPublishedRecipes } from "@hooks";
+import { useGetRecipes } from "@hooks/recipes";
 
 import {
     Layout,
@@ -19,7 +19,7 @@ const Recipes = (): ReactElement => {
     const [textFilter, setTextFilter] = useState<string>("");
     const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
-    const { recipes, isLoading, isError } = useGetPublishedRecipes({
+    const recipesQuery = useGetRecipes({
         text: textFilter,
         categories: selectedCategories,
     });
@@ -45,11 +45,11 @@ const Recipes = (): ReactElement => {
             <Container maxW="container.xl" mb={8}>
                 <Grid gridGap="8" templateColumns={{ md: "repeat(3, 1fr)" }}>
                     <GridItem colSpan={2}>
-                        {recipes ? (
+                        {recipesQuery.data ? (
                             <FilterList
-                                recipes={recipes}
-                                isLoading={isLoading}
-                                isError={isError}
+                                recipes={recipesQuery.data}
+                                isLoading={recipesQuery.isLoading}
+                                isError={recipesQuery.isError}
                                 onTextChange={handleTextChange}
                             />
                         ) : null}

@@ -9,7 +9,7 @@ type TProps = {
     categories: number[];
 };
 
-export const useGetPublishedRecipes = ({ text, categories }: TProps) => {
+export const useGetRecipes = ({ text, categories }: TProps) => {
     const query = qs.stringify(
         {
             filters: {
@@ -28,11 +28,7 @@ export const useGetPublishedRecipes = ({ text, categories }: TProps) => {
         },
     );
 
-    const {
-        data: recipes,
-        isLoading,
-        isError,
-    } = useQuery<TRecipes>(
+    const recipes = useQuery<TRecipes>(
         ["recipes", query],
         async () => {
             const res = await axios.get(
@@ -43,5 +39,5 @@ export const useGetPublishedRecipes = ({ text, categories }: TProps) => {
         { keepPreviousData: true },
     );
 
-    return { recipes, isLoading, isError };
+    return recipes;
 };

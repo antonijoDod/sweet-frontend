@@ -49,41 +49,19 @@ const MyProfile = (): ReactElement => {
             <Box>
                 <Box mb={8}>
                     <HStack justifyContent="space-between">
-                        <Heading size="lg">Moji recepti</Heading>
-                        <Button
-                            as={NextLink}
-                            href="/moj-profil/novi-recept"
-                            colorScheme="red"
-                        >
-                            Dodaj recept
-                        </Button>
+                        <Heading size="lg">Moji favoriti</Heading>
                     </HStack>
-                    <Text mt={4}>
-                        Svi moji objavljeni i neobjavljeni recepti
-                    </Text>
+                    <Text mt={4}>Svi moji spremljeni recepti</Text>
                 </Box>
                 <Divider mb={8} />
                 {isRecipeDataEmpty ? (
                     <HStack>
-                        <Button as={NextLink} href="/moj-profil/novi-recept">
-                            Dodaj novi recept
-                        </Button>
+                        <Text>Nema favorita</Text>
                     </HStack>
                 ) : (
                     <SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
                         {privateRecipes.data.map((recipe) => (
                             <Box key={recipe.id}>
-                                <Box mb={2}>
-                                    {recipe.attributes.publishedAt ? (
-                                        <Box bg="green.100" p={2}>
-                                            Objavljeno
-                                        </Box>
-                                    ) : (
-                                        <Box bg="red.100" p={2}>
-                                            Ceka potvrdu admina
-                                        </Box>
-                                    )}
-                                </Box>
                                 <RecipeCard {...recipe} />
                                 <Button
                                     onClick={() =>

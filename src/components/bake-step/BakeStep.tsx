@@ -39,8 +39,9 @@ const BakeStep = ({
                     <Box pt={2}>
                         <ReactMarkdown>{description}</ReactMarkdown>
                     </Box>
-                    <Box position="relative" h={72} mt="8">
-                        {step_image.data ? (
+
+                    {step_image.data ? (
+                        <Box position="relative" h={72} mt="8">
                             <Image
                                 src={
                                     itHasSmallImage()
@@ -54,15 +55,8 @@ const BakeStep = ({
                                 objectFit="cover"
                                 alt={step_image.data.attributes.name}
                             />
-                        ) : (
-                            <Image
-                                src="/images/product1.jpg"
-                                layout="fill"
-                                objectFit="cover"
-                                alt="No image"
-                            />
-                        )}
-                    </Box>
+                        </Box>
+                    ) : null}
                 </Box>
             </Flex>
         </Box>

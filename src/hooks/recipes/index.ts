@@ -1,4 +1,4 @@
-export { useGetPublishedRecipes } from "./useGetPublishedRecipes";
+export { useGetRecipes } from "./useGetRecipes";
 export { useGetPublishedRecipe } from "./useGetPublishedRecipe";
 export { useGetPrivateRecipes } from './useGetPrivateRecipes'
 export { useCreateRecipe } from './useCreateRecipe'

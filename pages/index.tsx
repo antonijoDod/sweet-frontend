@@ -125,7 +125,7 @@ export async function getServerSideProps() {
     const recipes = recipesResponse.data;
 
     const sliderRecipesResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?filters[isPopular][$eq]=true&sort[publishedAt]=Desc`
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?filters[isOnSlider][$eq]=true&sort[publishedAt]=Desc`
     );
     const sliderRecipes = sliderRecipesResponse.data;
 

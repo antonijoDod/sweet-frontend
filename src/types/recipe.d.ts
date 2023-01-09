@@ -15,10 +15,14 @@ export type TRecipeAttributes = {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    isPopular: boolean;
-    main_image: {
+    isOnSlider: boolean;
+    likes: number;
+    featured_image: {
         data: TImage | null;
     };
+    gallery_images: {
+        data: TImage[] | null;
+    }
     ingredients: TIngredient[] | [];
     steps: TStep[] | [];
     owner: {

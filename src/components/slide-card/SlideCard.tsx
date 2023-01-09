@@ -2,22 +2,27 @@ import React, { ReactElement } from "react";
 import { Box, Heading, Stack, HStack, Icon, Text } from "@chakra-ui/react";
 import { HiClock, HiUser, HiOutlineHeart } from "react-icons/hi";
 import Image from "next/image";
+import NextLink from "next/link";
 import { TRecipe } from "@types";
 
 const SlideCard = ({ id, attributes }: TRecipe): ReactElement => {
     return (
-        <Box position="relative">
+        <Box
+            as={NextLink}
+            href={`recept/${attributes.slug}`}
+            position="relative"
+        >
             <Box h={{ base: 250, lg: 500 }} position="relative">
                 <Image
                     src={
-                        attributes.main_image.data
-                            ? attributes.main_image.data.attributes.formats
+                        attributes.featured_image.data
+                            ? attributes.featured_image.data.attributes.formats
                                   .large
                                 ? process.env.NEXT_PUBLIC_SERVER_API +
-                                  attributes.main_image.data?.attributes.formats
-                                      .large.url
+                                  attributes.featured_image.data?.attributes
+                                      .formats.large.url
                                 : process.env.NEXT_PUBLIC_SERVER_API +
-                                  attributes.main_image.data?.attributes.url
+                                  attributes.featured_image.data?.attributes.url
                             : ""
                     }
                     layout="fill"
@@ -54,14 +59,6 @@ const SlideCard = ({ id, attributes }: TRecipe): ReactElement => {
                     <HStack spacing={2} align="center">
                         <Icon as={HiUser} color="red.500" fontSize="xl" />
                         <Text>Martina</Text>
-                    </HStack>
-                    <HStack spacing={2} align="center">
-                        <Icon
-                            as={HiOutlineHeart}
-                            color="red.500"
-                            fontSize="xl"
-                        />
-                        <Text>5 likes</Text>
                     </HStack>
                 </Stack>
             </Box>
