@@ -3,8 +3,7 @@ import Head from "next/head";
 import {
     Box,
     Container,
-    HStack,
-    Icon,
+    Text,
     Grid,
     GridItem,
     SimpleGrid,
@@ -73,44 +72,7 @@ const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
                     {/* Right sidebar */}
                     <GridItem>
                         <TextWithUnderline title="Prati me" fontSize="2xl" />
-                        <SimpleGrid columns={2} gap={4}>
-                            <HStack
-                                alignItems="center"
-                                bgColor="gray.100"
-                                p={2}
-                            >
-                                <Box>
-                                    <Icon as={FaFacebookF} />
-                                </Box>
-                                <Box>Like me on</Box>
-                            </HStack>
-                            <HStack
-                                alignItems="center"
-                                bgColor="gray.100"
-                                p={2}
-                            >
-                                <Box>
-                                    <Icon as={FaFacebookF} />
-                                </Box>
-                                <Box>0 Fans</Box>
-                            </HStack>
-                        </SimpleGrid>
-                        <Box mt={8}>
-                            <TextWithUnderline
-                                title="Nedavni recepti"
-                                fontSize="xl"
-                            />
-                            {recipes !== undefined && recipes?.data.length > 0
-                                ? recipes.data
-                                      .slice(0, 4)
-                                      .map((recipe) => (
-                                          <RecentCard
-                                              key={recipe.id}
-                                              {...recipe}
-                                          />
-                                      ))
-                                : "No data"}
-                        </Box>
+                        <Text>Banner</Text>
                     </GridItem>
                 </Grid>
             </Container>
@@ -120,7 +82,7 @@ const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
 
 export async function getServerSideProps() {
     const recipesResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?sort[publishedAt]=Desc`
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?pagination[limit]=2&sort[publishedAt]=Desc`
     );
     const recipes = recipesResponse.data;
 

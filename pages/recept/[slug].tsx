@@ -37,7 +37,6 @@ import { TRecipe, TRecipes } from "@types";
 import ReactMarkdown from "react-markdown";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
-import { useDeleteRecipe } from "@hooks/recipes";
 import { useRouter } from "next/router";
 
 type TRecipeProps = {
@@ -47,16 +46,7 @@ type TRecipeProps = {
 const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
     const { data: session, status } = useSession();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const deleteRecipe = useDeleteRecipe();
     const router = useRouter();
-
-    const handleDeleteRecipe = async () => {
-        await deleteRecipe.mutate(recipe.id, {
-            onSuccess: () => {
-                router.push("/moj-profil");
-            },
-        });
-    };
 
     if (!recipe) return <Text>Something is wrong</Text>;
 
@@ -92,16 +82,6 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                                     </Text>
                                 </HStack>
                                 <HStack align="center" h="full">
-                                    <Icon as={HiUser} color="red.500" />
-                                    <Text color="gray.600">
-                                        by{" "}
-                                        {
-                                            recipe.attributes.owner.data
-                                                .attributes.username
-                                        }
-                                    </Text>
-                                </HStack>
-                                <HStack align="center" h="full">
                                     <Icon as={HiHeart} color="red.500" />
                                     <Text color="gray.600">5</Text>
                                 </HStack>
@@ -110,19 +90,20 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                         </Stack>
                         {/* Image */}
                         <Box position="relative" h={96} mt="8">
-                            {recipe.attributes.main_image.data ? (
+                            {recipe.attributes.featured_image.data ? (
                                 <Image
                                     src={
-                                        recipe.attributes.main_image.data
+                                        recipe.attributes.featured_image.data
                                             ?.attributes.formats.large
                                             ? process.env
                                                   .NEXT_PUBLIC_SERVER_API +
-                                              recipe.attributes.main_image.data
-                                                  ?.attributes.formats.large.url
+                                              recipe.attributes.featured_image
+                                                  .data?.attributes.formats
+                                                  .large.url
                                             : process.env
                                                   .NEXT_PUBLIC_SERVER_API +
-                                              recipe.attributes.main_image.data
-                                                  ?.attributes.url
+                                              recipe.attributes.featured_image
+                                                  .data?.attributes.url
                                     }
                                     layout="fill"
                                     objectFit="cover"
@@ -251,7 +232,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }: { params: { slug: string } }) {
     const { slug } = params;
     const recipeResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes/feed/${slug}`
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes/${slug}`
     );
 
     const recipe = recipeResponse.data.data;

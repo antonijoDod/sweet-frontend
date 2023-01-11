@@ -62,12 +62,6 @@ const Recipes = (): ReactElement => {
                                 selectedCategories={selectedCategories}
                             />
                         </Box>
-                        <Box mt={8}>
-                            <TextWithUnderline
-                                title="Nedavni recepti"
-                                fontSize="xl"
-                            />
-                        </Box>
                     </GridItem>
                 </Grid>
             </Container>
