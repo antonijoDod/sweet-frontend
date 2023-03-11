@@ -8,15 +8,8 @@ import {
     GridItem,
     SimpleGrid,
 } from "@chakra-ui/react";
-import { FaFacebookF } from "react-icons/fa";
 
-import {
-    Layout,
-    RecentCard,
-    RecipeCard,
-    HeroSlider,
-    TextWithUnderline,
-} from "@components";
+import { Layout, RecipeCard, HeroSlider, TextWithUnderline } from "@components";
 import axios from "axios";
 import { TRecipes } from "@types";
 
@@ -45,26 +38,18 @@ const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
                             fontSize="2xl"
                         />
                         <Box>
-                            {recipes?.data && recipes.data.length > 0 ? (
-                                <RecipeCard
-                                    imageHeight={450}
-                                    {...recipes.data[0]}
-                                />
-                            ) : null}
                             <SimpleGrid
                                 columns={{ base: 1, md: 2 }}
                                 gap="8"
                                 mt={8}
                             >
                                 {recipes?.data && recipes.data.length > 0
-                                    ? recipes.data
-                                          .slice(1, 9)
-                                          .map((recipe) => (
-                                              <RecipeCard
-                                                  key={recipe.id}
-                                                  {...recipe}
-                                              />
-                                          ))
+                                    ? recipes.data.map((recipe) => (
+                                          <RecipeCard
+                                              key={recipe.id}
+                                              {...recipe}
+                                          />
+                                      ))
                                     : "No recipes data"}
                             </SimpleGrid>
                         </Box>
@@ -82,7 +67,7 @@ const Home = ({ recipes, sliderRecipes }: THomeProps): ReactElement => {
 
 export async function getServerSideProps() {
     const recipesResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?pagination[limit]=2&sort[publishedAt]=Desc`
+        `${process.env.NEXT_PUBLIC_SERVER_API}/api/recipes?pagination[limit]=8&sort[publishedAt]=Desc`
     );
     const recipes = recipesResponse.data;
 

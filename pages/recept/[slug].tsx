@@ -38,26 +38,37 @@ import ReactMarkdown from "react-markdown";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Head from "next/head";
+import ImageGallery from "react-image-gallery";
 
 type TRecipeProps = {
     recipe: TRecipe;
 };
 
 const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
-    const { data: session, status } = useSession();
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const router = useRouter();
-
     if (!recipe) return <Text>Something is wrong</Text>;
 
     return (
         <Layout>
+            <Head>
+                <title>{recipe.attributes.title} | JEDNOSTAVNI KOLAČI</title>
+            </Head>
             <HeroAndBreadcrumb title={recipe.attributes.title} />
             <Container maxW="container.xl" my="16">
                 <Grid gap={16} templateColumns={{ md: "repeat(3, 1fr)" }}>
                     <GridItem colSpan={2}>
                         <HStack alignItems="center" mb={4}>
-                            <Text>Bez kategorije</Text>
+                            {recipe.attributes.categories.data.length > 0 ? (
+                                recipe.attributes.categories.data.map(
+                                    (category) => (
+                                        <Text key={category.id}>
+                                            {category.attributes.name}
+                                        </Text>
+                                    )
+                                )
+                            ) : (
+                                <Text>Bez kategorije</Text>
+                            )}
                         </HStack>
                         <Heading as="h2" size="lg" mb={4}>
                             {recipe.attributes.title}
@@ -81,40 +92,28 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                                         )}
                                     </Text>
                                 </HStack>
-                                <HStack align="center" h="full">
-                                    <Icon as={HiHeart} color="red.500" />
-                                    <Text color="gray.600">5</Text>
-                                </HStack>
                             </HStack>
                             <SocialShareMenu />
                         </Stack>
                         {/* Image */}
-                        <Box position="relative" h={96} mt="8">
-                            {recipe.attributes.featured_image.data ? (
-                                <Image
-                                    src={
-                                        recipe.attributes.featured_image.data
-                                            ?.attributes.formats.large
-                                            ? process.env
-                                                  .NEXT_PUBLIC_SERVER_API +
-                                              recipe.attributes.featured_image
-                                                  .data?.attributes.formats
-                                                  .large.url
-                                            : process.env
-                                                  .NEXT_PUBLIC_SERVER_API +
-                                              recipe.attributes.featured_image
-                                                  .data?.attributes.url
-                                    }
-                                    layout="fill"
-                                    objectFit="cover"
-                                    alt={recipe.attributes.title}
-                                />
-                            ) : (
-                                <Image
-                                    src="/images/no-image.jpg"
-                                    layout="fill"
-                                    objectFit="cover"
-                                    alt={recipe.attributes.title}
+                        <Box mt="8">
+                            {recipe.attributes.gallery_images.data && (
+                                <ImageGallery
+                                    items={recipe.attributes.gallery_images.data.map(
+                                        (image) => {
+                                            return {
+                                                original:
+                                                    process.env
+                                                        .NEXT_PUBLIC_SERVER_API +
+                                                    image.attributes.url,
+                                                thumbnail:
+                                                    process.env
+                                                        .NEXT_PUBLIC_SERVER_API +
+                                                    image.attributes.formats
+                                                        .thumbnail.url,
+                                            };
+                                        }
+                                    )}
                                 />
                             )}
                         </Box>
@@ -124,22 +123,30 @@ const Recipe = ({ recipe }: TRecipeProps): ReactElement => {
                                 <InfoWithIcon
                                     icon={RiKnifeLine}
                                     label="Priprema"
-                                    value="150 min"
+                                    value={
+                                        recipe.attributes.preparing_time ||
+                                        0 + " min"
+                                    }
                                 />
                                 <InfoWithIcon
                                     icon={GiCookingGlove}
                                     label="Pečenje"
-                                    value="150 min"
+                                    value={
+                                        recipe.attributes.cooking_time ||
+                                        0 + " min"
+                                    }
                                 />
                                 <InfoWithIcon
                                     icon={HiOutlineClock}
                                     label="Ukupno"
-                                    value="150 min"
+                                    value={1}
                                 />
                                 <InfoWithIcon
                                     icon={HiOutlineUsers}
                                     label="Za osoba"
-                                    value="5 osoba"
+                                    value={`${
+                                        recipe.attributes.serving_for || 0
+                                    } porcija`}
                                 />
                             </SimpleGrid>
                         </Box>

@@ -1,4 +1,4 @@
-import "@styles/global.css";
+import "../src/styles/global.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
@@ -8,7 +8,6 @@ import {
     Hydrate,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
 import theme from "@definitions/chakra/theme";
 
 import "@fontsource/poppins/700.css";

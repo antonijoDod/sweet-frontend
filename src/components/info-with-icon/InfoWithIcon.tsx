@@ -4,7 +4,7 @@ import { HStack, Icon, Box, Heading, Text } from "@chakra-ui/react";
 type TInfoWithIconProps = {
     icon: any;
     label: string;
-    value: string;
+    value: string | number;
 };
 
 const InfoWithIcon = ({
